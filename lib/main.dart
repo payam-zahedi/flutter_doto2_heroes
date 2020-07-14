@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -79,6 +81,7 @@ class HeroesPage extends StatelessWidget {
                       .map(
                         (item) => HeroWidget(
                           hero: item,
+                          onTap: () {},
                         ),
                       )
                       .toList(),
@@ -92,75 +95,154 @@ class HeroesPage extends StatelessWidget {
   }
 }
 
-class HeroWidget extends StatelessWidget {
+class HeroWidget extends StatefulWidget {
   const HeroWidget({
     Key key,
     @required this.hero,
+    @required this.onTap,
   }) : super(key: key);
 
   final DotaHero hero;
+  final VoidCallback onTap;
+
+  @override
+  _HeroWidgetState createState() => _HeroWidgetState();
+}
+
+class _HeroWidgetState extends State<HeroWidget> with SingleTickerProviderStateMixin {
+  AnimationController _clickController;
+  Animation _imageAnimation;
+  Animation _paddingAnimation;
+  Animation _fadeAnimation;
+
+  final _beginPadding = EdgeInsets.only(top: 36, left: 16, right: 8);
+  final _endPadding = EdgeInsets.only(top: 42, left: 24, right: 8, bottom: 8);
+
+  @override
+  void initState() {
+    _clickController = AnimationController(
+      duration: Duration(milliseconds: 150),
+      vsync: this,
+    );
+
+    _imageAnimation = Tween<double>(
+      begin: 16,
+      end: 0,
+    ).animate(CurvedAnimation(parent: _clickController, curve: Curves.easeInSine));
+
+    _paddingAnimation = EdgeInsetsTween(
+      begin: _beginPadding,
+      end: _endPadding,
+    ).animate(CurvedAnimation(parent: _clickController, curve: Curves.easeInSine));
+
+    _fadeAnimation = Tween<double>(
+      begin: 1,
+      end: 0,
+    ).animate(CurvedAnimation(parent: _clickController, curve: Curves.easeInSine));
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 36, left: 16, right: 8),
-          child: ClipPath(
-            clipper: RoundedDiagonalPathClipper(borderRadius: 24),
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    hero.color[200],
-                    hero.color[800],
-                  ],
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        log('onTap');
+      },
+      onTapDown: (value) {
+        log('onTapDown');
+        _clickController.forward();
+      },
+      onTapCancel: () {
+        log('onTapCancel');
+        _clickController.reverse();
+      },
+      onTapUp: (value) {
+        log('onTapUp');
+        _clickController.reverse();
+      },
+      child: Stack(
+        children: <Widget>[
+          AnimatedBuilder(
+            animation: _paddingAnimation,
+            builder: (BuildContext context, Widget child) {
+              return Padding(
+                padding: _paddingAnimation.value,
+                child: child,
+              );
+            },
+            child: ClipPath(
+              clipper: RoundedDiagonalPathClipper(borderRadius: 24),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      widget.hero.color[200],
+                      widget.hero.color[800],
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        Align(
-          alignment: AlignmentDirectional.bottomEnd,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              print(constraints);
-              return SizedBox(
-                width: constraints.maxWidth - 16,
-                height: constraints.maxHeight - 16,
-                child: Image.network(
-                  hero.imagePath,
-                  fit: BoxFit.contain,
-                ),
-              );
-            },
+          Align(
+            alignment: AlignmentDirectional.bottomEnd,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                print(constraints);
+                return AnimatedBuilder(
+                  child: Image.network(
+                    widget.hero.imagePath,
+                    fit: BoxFit.contain,
+                  ),
+                  animation: _imageAnimation,
+                  builder: (BuildContext context, Widget child) {
+                    return SizedBox(
+                      width: constraints.maxWidth - _imageAnimation.value,
+                      height: constraints.maxHeight - _imageAnimation.value,
+                      child: child,
+                    );
+                  },
+                );
+              },
+            ),
           ),
-        ),
-        Positioned(
-          left: 32,
-          bottom: 32,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                hero.name,
-                style: Theme.of(context).textTheme.title.copyWith(
-                      fontSize: 16,
-                    ),
+          Positioned(
+            left: 32,
+            bottom: 32,
+            child: AnimatedBuilder(
+              animation: _fadeAnimation,
+              builder: (context, child) {
+                return Opacity(
+                  opacity: _fadeAnimation.value,
+                  child: child,
+                );
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    widget.hero.name,
+                    style: Theme.of(context).textTheme.title.copyWith(
+                          fontSize: 16,
+                        ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    '${widget.hero.views} Views',
+                    style: Theme.of(context).textTheme.body1.copyWith(
+                          fontSize: 12,
+                        ),
+                  ),
+                ],
               ),
-              SizedBox(height: 8),
-              Text(
-                '${hero.views} Views',
-                style: Theme.of(context).textTheme.body1.copyWith(
-                      fontSize: 12,
-                    ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -194,6 +276,13 @@ class DotaHero {
           color: Colors.indigo,
         ),
         DotaHero(
+          name: 'Slark',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark.png',
+          views: '39k',
+          color: Colors.brown,
+        ),
+        DotaHero(
           name: 'Void',
           imagePath:
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void.png',
@@ -201,18 +290,18 @@ class DotaHero {
           color: Colors.deepPurple,
         ),
         DotaHero(
-          name: 'Zeus',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus.png',
-          views: '24k',
-          color: Colors.blue,
-        ),
-        DotaHero(
           name: 'Shadow Fiend',
           imagePath:
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf.png',
           views: '33k',
           color: Colors.red,
+        ),
+        DotaHero(
+          name: 'Zeus',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus.png',
+          views: '24k',
+          color: Colors.blue,
         ),
         DotaHero(
           name: 'Earth Shaker',
@@ -227,6 +316,20 @@ class DotaHero {
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor.png',
           views: '33k',
           color: Colors.teal,
+        ),
+        DotaHero(
+          name: 'Invoker',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker.png',
+          views: '33k',
+          color: Colors.lime,
+        ),
+        DotaHero(
+          name: 'Sven',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven.png',
+          views: '54k',
+          color: Colors.blueGrey,
         ),
       ];
 }
