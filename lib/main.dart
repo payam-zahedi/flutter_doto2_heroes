@@ -2,6 +2,95 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 
+// model
+class DotaHero {
+  const DotaHero({
+    @required this.name,
+    @required this.imagePath,
+    @required this.views,
+    @required this.color,
+  });
+
+  final String name;
+  final String imagePath;
+  final String views;
+  final MaterialColor color;
+
+  static List<DotaHero> get favoriteHeroes => [
+        DotaHero(
+          name: 'Rubick',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick.png',
+          views: '24k',
+          color: Colors.green,
+        ),
+        DotaHero(
+          name: 'Ogry',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry.png',
+          views: '24k',
+          color: Colors.indigo,
+        ),
+        DotaHero(
+          name: 'Slark',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark.png',
+          views: '39k',
+          color: Colors.brown,
+        ),
+        DotaHero(
+          name: 'Void',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void.png',
+          views: '13k',
+          color: Colors.deepPurple,
+        ),
+        DotaHero(
+          name: 'Shadow Fiend',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf.png',
+          views: '33k',
+          color: Colors.red,
+        ),
+        DotaHero(
+          name: 'Zeus',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus.png',
+          views: '24k',
+          color: Colors.blue,
+        ),
+        DotaHero(
+          name: 'Earth Shaker',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker.png',
+          views: '33k',
+          color: Colors.orange,
+        ),
+        DotaHero(
+          name: 'Disruptor',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor.png',
+          views: '33k',
+          color: Colors.teal,
+        ),
+        DotaHero(
+          name: 'Invoker',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker.png',
+          views: '33k',
+          color: Colors.lime,
+        ),
+        DotaHero(
+          name: 'Sven',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven.png',
+          views: '54k',
+          color: Colors.blueGrey,
+        ),
+      ];
+}
+
+//main runner
 void main() {
   runApp(IntroductionApp());
 }
@@ -28,14 +117,19 @@ class IntroductionApp extends StatelessWidget {
           onSurface: Color(0xFFC1C1D3),
           onError: Colors.white,
         ),
+        appBarTheme: AppBarTheme(
+          color: Color(0xFF000001),
+          elevation: 0,
+        ),
       ),
       themeMode: ThemeMode.dark,
-      home: HeroesPage(),
+      home: DetailPage(hero: DotaHero.favoriteHeroes.first),
     );
   }
 }
 
-class HeroesPage extends StatelessWidget {
+// favorite page
+class FavoritePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -247,93 +341,6 @@ class _HeroWidgetState extends State<HeroWidget> with SingleTickerProviderStateM
   }
 }
 
-class DotaHero {
-  const DotaHero({
-    @required this.name,
-    @required this.imagePath,
-    @required this.views,
-    @required this.color,
-  });
-
-  final String name;
-  final String imagePath;
-  final String views;
-  final MaterialColor color;
-
-  static List<DotaHero> get favoriteHeroes => [
-        DotaHero(
-          name: 'Rubick',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick.png',
-          views: '24k',
-          color: Colors.green,
-        ),
-        DotaHero(
-          name: 'Ogry',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry.png',
-          views: '24k',
-          color: Colors.indigo,
-        ),
-        DotaHero(
-          name: 'Slark',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark.png',
-          views: '39k',
-          color: Colors.brown,
-        ),
-        DotaHero(
-          name: 'Void',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void.png',
-          views: '13k',
-          color: Colors.deepPurple,
-        ),
-        DotaHero(
-          name: 'Shadow Fiend',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf.png',
-          views: '33k',
-          color: Colors.red,
-        ),
-        DotaHero(
-          name: 'Zeus',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus.png',
-          views: '24k',
-          color: Colors.blue,
-        ),
-        DotaHero(
-          name: 'Earth Shaker',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker.png',
-          views: '33k',
-          color: Colors.orange,
-        ),
-        DotaHero(
-          name: 'Disruptor',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor.png',
-          views: '33k',
-          color: Colors.teal,
-        ),
-        DotaHero(
-          name: 'Invoker',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker.png',
-          views: '33k',
-          color: Colors.lime,
-        ),
-        DotaHero(
-          name: 'Sven',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven.png',
-          views: '54k',
-          color: Colors.blueGrey,
-        ),
-      ];
-}
-
 class RoundedDiagonalPathClipper extends CustomClipper<Path> {
   const RoundedDiagonalPathClipper({this.borderRadius});
 
@@ -375,5 +382,30 @@ class RoundedDiagonalPathClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
     return true;
+  }
+}
+
+// detail page
+class DetailPage extends StatelessWidget {
+  final DotaHero hero;
+
+  const DetailPage({
+    Key key,
+    @required this.hero,
+  })  : assert(hero != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          hero.name,
+          style: Theme.of(context).textTheme.body1,
+        ),
+        centerTitle: true,
+        leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed: () {}),
+      ),
+    );
   }
 }
