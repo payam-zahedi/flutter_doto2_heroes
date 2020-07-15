@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+
 
 // model
 class DotaHero {
@@ -123,13 +125,28 @@ class IntroductionApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.dark,
-      home: DetailPage(hero: DotaHero.favoriteHeroes.first),
+      home: FavoritePage(),
+//      home: DetailPage(hero: DotaHero.favoriteHeroes.first),
     );
   }
 }
 
 // favorite page
-class FavoritePage extends StatelessWidget {
+class FavoritePage extends StatefulWidget {
+  @override
+  _FavoritePageState createState() => _FavoritePageState();
+}
+
+class _FavoritePageState extends State<FavoritePage> with TickerProviderStateMixin {
+  AnimationController animationController;
+
+  @override
+  void initState() {
+    animationController =
+        AnimationController(duration: const Duration(milliseconds: 2000), vsync: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,14 +188,29 @@ class FavoritePage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   maxCrossAxisExtent: 210,
                   childAspectRatio: 9 / 11,
-                  children: DotaHero.favoriteHeroes
-                      .map(
-                        (item) => HeroWidget(
-                          hero: item,
-                          onTap: () {},
+                  children: List<Widget>.generate(
+                    DotaHero.favoriteHeroes.length,
+                    (index) {
+                      final count = DotaHero.favoriteHeroes.length;
+                      final Animation<double> animation = Tween<double>(
+                        begin: 0,
+                        end: 1,
+                      ).animate(
+                        CurvedAnimation(
+                          parent: animationController,
+                          curve: Interval((1 / count) * index, 1, curve: Curves.fastOutSlowIn),
                         ),
-                      )
-                      .toList(),
+                      );
+
+                      animationController.forward();
+                      return HeroWidget(
+                        hero: DotaHero.favoriteHeroes[index],
+                        onTap: () {},
+                        transition: animation,
+                        transitionController: animationController,
+                      );
+                    },
+                  ),
                 ),
               )
             ],
@@ -187,6 +219,12 @@ class FavoritePage extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 }
 
 class HeroWidget extends StatefulWidget {
@@ -194,10 +232,14 @@ class HeroWidget extends StatefulWidget {
     Key key,
     @required this.hero,
     @required this.onTap,
+    @required this.transitionController,
+    @required this.transition,
   }) : super(key: key);
 
   final DotaHero hero;
   final VoidCallback onTap;
+  final AnimationController transitionController;
+  final Animation<dynamic> transition;
 
   @override
   _HeroWidgetState createState() => _HeroWidgetState();
@@ -239,105 +281,128 @@ class _HeroWidgetState extends State<HeroWidget> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        log('onTap');
+    return AnimatedBuilder(
+      animation: widget.transitionController,
+      builder: (BuildContext context, Widget child) {
+        return FadeTransition(
+          opacity: widget.transition,
+          child: Transform(
+            transform: Matrix4.translationValues(
+              0.0,
+              50 * (1.0 - widget.transition.value),
+              0.0,
+            ),
+            child: child,
+          ),
+        );
       },
-      onTapDown: (value) {
-        log('onTapDown');
-        _clickController.forward();
-      },
-      onTapCancel: () {
-        log('onTapCancel');
-        _clickController.reverse();
-      },
-      onTapUp: (value) {
-        log('onTapUp');
-        _clickController.reverse();
-      },
-      child: Stack(
-        children: <Widget>[
-          AnimatedBuilder(
-            animation: _paddingAnimation,
-            builder: (BuildContext context, Widget child) {
-              return Padding(
-                padding: _paddingAnimation.value,
-                child: child,
-              );
-            },
-            child: ClipPath(
-              clipper: RoundedDiagonalPathClipper(borderRadius: 24),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      widget.hero.color[200],
-                      widget.hero.color[800],
-                    ],
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          log('onTap');
+        },
+        onTapDown: (value) {
+          log('onTapDown');
+          _clickController.forward();
+        },
+        onTapCancel: () {
+          log('onTapCancel');
+          _clickController.reverse();
+        },
+        onTapUp: (value) {
+          log('onTapUp');
+          _clickController.reverse();
+        },
+        child: Stack(
+          children: <Widget>[
+            AnimatedBuilder(
+              animation: _paddingAnimation,
+              builder: (BuildContext context, Widget child) {
+                return Padding(
+                  padding: _paddingAnimation.value,
+                  child: child,
+                );
+              },
+              child: ClipPath(
+                clipper: RoundedDiagonalPathClipper(borderRadius: 24),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        widget.hero.color[200],
+                        widget.hero.color[800],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Align(
-            alignment: AlignmentDirectional.bottomEnd,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                print(constraints);
-                return AnimatedBuilder(
-                  child: Image.network(
-                    widget.hero.imagePath,
-                    fit: BoxFit.contain,
-                  ),
-                  animation: _imageAnimation,
-                  builder: (BuildContext context, Widget child) {
-                    return SizedBox(
-                      width: constraints.maxWidth - _imageAnimation.value,
-                      height: constraints.maxHeight - _imageAnimation.value,
-                      child: child,
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-          Positioned(
-            left: 32,
-            bottom: 32,
-            child: AnimatedBuilder(
-              animation: _fadeAnimation,
-              builder: (context, child) {
-                return Opacity(
-                  opacity: _fadeAnimation.value,
-                  child: child,
-                );
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    widget.hero.name,
-                    style: Theme.of(context).textTheme.title.copyWith(
-                          fontSize: 16,
-                        ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    '${widget.hero.views} Views',
-                    style: Theme.of(context).textTheme.body1.copyWith(
-                          fontSize: 12,
-                        ),
-                  ),
-                ],
+            Align(
+              alignment: AlignmentDirectional.bottomEnd,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  print(constraints);
+                  return AnimatedBuilder(
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      fit: BoxFit.contain,
+                      image : widget.hero.imagePath,
+                    ),
+                    animation: _imageAnimation,
+                    builder: (BuildContext context, Widget child) {
+                      return SizedBox(
+                        width: constraints.maxWidth - _imageAnimation.value,
+                        height: constraints.maxHeight - _imageAnimation.value,
+                        child: child,
+                      );
+                    },
+                  );
+                },
               ),
             ),
-          ),
-        ],
+            Positioned(
+              left: 32,
+              bottom: 32,
+              child: AnimatedBuilder(
+                animation: _fadeAnimation,
+                builder: (context, child) {
+                  return Opacity(
+                    opacity: _fadeAnimation.value,
+                    child: child,
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      widget.hero.name,
+                      style: Theme.of(context).textTheme.title.copyWith(
+                            fontSize: 16,
+                          ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      '${widget.hero.views} Views',
+                      style: Theme.of(context).textTheme.body1.copyWith(
+                            fontSize: 12,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _clickController.dispose();
+    super.dispose();
   }
 }
 
@@ -409,3 +474,70 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
+
+final Uint8List kTransparentImage = new Uint8List.fromList(<int>[
+  0x89,
+  0x50,
+  0x4E,
+  0x47,
+  0x0D,
+  0x0A,
+  0x1A,
+  0x0A,
+  0x00,
+  0x00,
+  0x00,
+  0x0D,
+  0x49,
+  0x48,
+  0x44,
+  0x52,
+  0x00,
+  0x00,
+  0x00,
+  0x01,
+  0x00,
+  0x00,
+  0x00,
+  0x01,
+  0x08,
+  0x06,
+  0x00,
+  0x00,
+  0x00,
+  0x1F,
+  0x15,
+  0xC4,
+  0x89,
+  0x00,
+  0x00,
+  0x00,
+  0x0A,
+  0x49,
+  0x44,
+  0x41,
+  0x54,
+  0x78,
+  0x9C,
+  0x63,
+  0x00,
+  0x01,
+  0x00,
+  0x00,
+  0x05,
+  0x00,
+  0x01,
+  0x0D,
+  0x0A,
+  0x2D,
+  0xB4,
+  0x00,
+  0x00,
+  0x00,
+  0x00,
+  0x49,
+  0x45,
+  0x4E,
+  0x44,
+  0xAE,
+]);
