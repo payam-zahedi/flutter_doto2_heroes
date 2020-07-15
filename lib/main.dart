@@ -398,7 +398,6 @@ class DetailPage extends StatelessWidget {
         leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed: () {}),
       ),
       body: Container(
-        color: Colors.grey,
         constraints: BoxConstraints.expand(),
         child: SingleChildScrollView(
           child: Column(
@@ -406,23 +405,129 @@ class DetailPage extends StatelessWidget {
               Container(
                 child: AspectRatio(
                   aspectRatio: 1.3,
-                  child:Stack(
+                  child: Stack(
                     fit: StackFit.expand,
                     children: <Widget>[
-                      FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        fit: BoxFit.contain,
-                        image:'https://i7.pngguru.com/preview/687/756/880/line-blue-vector-flow-line-background.jpg',
+                      Opacity(
+                        opacity: 0.5,
+                        child: ColorFiltered(
+                          colorFilter: ColorFilter.mode(hero.color[400], BlendMode.modulate),
+                          child: FadeInImage.memoryNetwork(
+                            placeholder: kTransparentImage,
+                            fit: BoxFit.cover,
+                            image:
+                                'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/game/intelligence_background.png',
+                          ),
+                        ),
                       ),
                       FadeInImage.memoryNetwork(
                         placeholder: kTransparentImage,
                         fit: BoxFit.contain,
-                        image:hero.imagePath,
+                        image: hero.imagePath,
+                      ),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Text(
+                                hero.name,
+                                style: Theme.of(context).textTheme.headline5.copyWith(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              margin: EdgeInsets.symmetric(horizontal: 16),
+                              decoration: BoxDecoration(
+                                color: hero.color[400],
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                hero.roles.join(', '),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-              )
+              ),
+              SizedBox(height: 16),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Hero Skills',
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        color: hero.color[300],
+                      ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: hero.levels
+                      .map(
+                        (level) => Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              SizedBox(
+                                height: MediaQuery.of(context).size.shortestSide / 7,
+                                width: MediaQuery.of(context).size.shortestSide / 7,
+                                child: ClipOval(
+                                  child: FadeInImage.memoryNetwork(
+                                    placeholder: kTransparentImage,
+                                    fit: BoxFit.cover,
+                                    image: level.imageUrl,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                level.name,
+                                style: Theme.of(context).textTheme.bodyText2,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Bio',
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                    color: hero.color[300],
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  hero.bio,
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+              ),
             ],
           ),
         ),
