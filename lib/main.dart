@@ -3,133 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-// model
-class DotaHero {
-  const DotaHero( {
-    @required this.name,
-    @required this.imagePath,
-    @required this.views,
-    @required this.color,
-    this.bio,
-    this.roles,
-    this.attackType,
-    this.primaryAttr,
-    this.levels,
-  });
-
-  final String name;
-  final String imagePath;
-  final String views;
-  final String bio;
-  final List<String> roles;
-  final AttackType attackType;
-  final PrimaryAttr primaryAttr;
-  final MaterialColor color;
-  final List<HeroLevel> levels;
-
-  static List<DotaHero> get favoriteHeroes => [
-        DotaHero(
-          name: 'Rubick',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick/rubick.png',
-          views: '24k',
-          color: Colors.green,
-        ),
-        DotaHero(
-          name: 'Ogry',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/ogry.png',
-          views: '24k',
-          color: Colors.indigo,
-        ),
-        DotaHero(
-          name: 'Slark',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/slark.png',
-          views: '39k',
-          color: Colors.brown,
-        ),
-        DotaHero(
-          name: 'Void',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/void.png',
-          views: '13k',
-          color: Colors.deepPurple,
-        ),
-        DotaHero(
-          name: 'Shadow Fiend',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/sf.png',
-          views: '33k',
-          color: Colors.red,
-        ),
-        DotaHero(
-          name: 'Zeus',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/zeus.png',
-          views: '24k',
-          color: Colors.blue,
-        ),
-        DotaHero(
-          name: 'Earth Shaker',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/earth_shaker.png',
-          views: '33k',
-          color: Colors.orange,
-        ),
-        DotaHero(
-          name: 'Disruptor',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/disruptor.png',
-          views: '33k',
-          color: Colors.teal,
-        ),
-        DotaHero(
-          name: 'Invoker',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/invoker.png',
-          views: '33k',
-          color: Colors.lime,
-        ),
-        DotaHero(
-          name: 'Sven',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/sven.png',
-          views: '54k',
-          color: Colors.blueGrey,
-        ),
-      ];
-}
-
-class HeroLevel {
-  HeroLevel( {
-    @required this.name,
-    @required this.description,
-    @required this.imageUrl,
-    this.manaCost, this.coolDown,
-  });
-
-  final String name;
-  final String description;
-  final String imageUrl;
-  final String manaCost;
-  final int coolDown;
-
-  @override
-  String toString() {
-    return 'HeroLevel{name: $name, description: $description, imageUrl: $imageUrl, manaCost: $manaCost, coolDown: $coolDown}';
-  }
-}
-
-enum AttackType {
-  melee,
-  range,
-}
-enum PrimaryAttr{
-  strength,
-  agility,
-  intelligence,
-}
 
 //main runner
 void main() {
@@ -595,3 +468,133 @@ final Uint8List kTransparentImage = new Uint8List.fromList(<int>[
   0x44,
   0xAE,
 ]);
+
+
+
+// models
+class DotaHero {
+  const DotaHero( {
+    @required this.name,
+    @required this.imagePath,
+    @required this.views,
+    @required this.color,
+    this.bio,
+    this.roles,
+    this.attackType,
+    this.primaryAttr,
+    this.levels,
+  });
+
+  final String name;
+  final String imagePath;
+  final String views;
+  final String bio;
+  final List<String> roles;
+  final AttackType attackType;
+  final PrimaryAttr primaryAttr;
+  final MaterialColor color;
+  final List<HeroLevel> levels;
+
+  static List<DotaHero> get favoriteHeroes => [
+    DotaHero(
+      name: 'Rubick',
+      imagePath:
+      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick/rubick.png',
+      views: '24k',
+      color: Colors.green,
+    ),
+    DotaHero(
+      name: 'Ogry',
+      imagePath:
+      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/ogry.png',
+      views: '24k',
+      color: Colors.indigo,
+    ),
+    DotaHero(
+      name: 'Slark',
+      imagePath:
+      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/slark.png',
+      views: '39k',
+      color: Colors.brown,
+    ),
+    DotaHero(
+      name: 'Void',
+      imagePath:
+      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/void.png',
+      views: '13k',
+      color: Colors.deepPurple,
+    ),
+    DotaHero(
+      name: 'Shadow Fiend',
+      imagePath:
+      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/sf.png',
+      views: '33k',
+      color: Colors.red,
+    ),
+    DotaHero(
+      name: 'Zeus',
+      imagePath:
+      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/zeus.png',
+      views: '24k',
+      color: Colors.blue,
+    ),
+    DotaHero(
+      name: 'Earth Shaker',
+      imagePath:
+      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/earth_shaker.png',
+      views: '33k',
+      color: Colors.orange,
+    ),
+    DotaHero(
+      name: 'Disruptor',
+      imagePath:
+      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/disruptor.png',
+      views: '33k',
+      color: Colors.teal,
+    ),
+    DotaHero(
+      name: 'Invoker',
+      imagePath:
+      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/invoker.png',
+      views: '33k',
+      color: Colors.lime,
+    ),
+    DotaHero(
+      name: 'Sven',
+      imagePath:
+      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/sven.png',
+      views: '54k',
+      color: Colors.blueGrey,
+    ),
+  ];
+}
+
+class HeroLevel {
+  HeroLevel( {
+    @required this.name,
+    @required this.description,
+    @required this.imageUrl,
+    this.manaCost, this.coolDown,
+  });
+
+  final String name;
+  final String description;
+  final String imageUrl;
+  final String manaCost;
+  final int coolDown;
+
+  @override
+  String toString() {
+    return 'HeroLevel{name: $name, description: $description, imageUrl: $imageUrl, manaCost: $manaCost, coolDown: $coolDown}';
+  }
+}
+
+enum AttackType {
+  melee,
+  range,
+}
+enum PrimaryAttr{
+  strength,
+  agility,
+  intelligence,
+}
