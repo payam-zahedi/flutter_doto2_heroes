@@ -102,19 +102,22 @@ class DotaHero {
 }
 
 class HeroLevel {
-  HeroLevel({
+  HeroLevel( {
     @required this.name,
     @required this.description,
     @required this.imageUrl,
+    this.manaCost, this.coolDown,
   });
 
   final String name;
   final String description;
   final String imageUrl;
+  final String manaCost;
+  final int coolDown;
 
   @override
   String toString() {
-    return 'HeroLevel{name: $name, description: $description, imageUrl: $imageUrl}';
+    return 'HeroLevel{name: $name, description: $description, imageUrl: $imageUrl, manaCost: $manaCost, coolDown: $coolDown}';
   }
 }
 
