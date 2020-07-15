@@ -21,70 +21,70 @@ class DotaHero {
         DotaHero(
           name: 'Rubick',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick.png',
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick/rubick.png',
           views: '24k',
           color: Colors.green,
         ),
         DotaHero(
           name: 'Ogry',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry.png',
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/ogry.png',
           views: '24k',
           color: Colors.indigo,
         ),
         DotaHero(
           name: 'Slark',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark.png',
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/slark.png',
           views: '39k',
           color: Colors.brown,
         ),
         DotaHero(
           name: 'Void',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void.png',
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/void.png',
           views: '13k',
           color: Colors.deepPurple,
         ),
         DotaHero(
           name: 'Shadow Fiend',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf.png',
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/sf.png',
           views: '33k',
           color: Colors.red,
         ),
         DotaHero(
           name: 'Zeus',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus.png',
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/zeus.png',
           views: '24k',
           color: Colors.blue,
         ),
         DotaHero(
           name: 'Earth Shaker',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker.png',
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/earth_shaker.png',
           views: '33k',
           color: Colors.orange,
         ),
         DotaHero(
           name: 'Disruptor',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor.png',
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/disruptor.png',
           views: '33k',
           color: Colors.teal,
         ),
         DotaHero(
           name: 'Invoker',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker.png',
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/invoker.png',
           views: '33k',
           color: Colors.lime,
         ),
         DotaHero(
           name: 'Sven',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven.png',
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/sven.png',
           views: '54k',
           color: Colors.blueGrey,
         ),
