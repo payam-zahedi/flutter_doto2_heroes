@@ -5,17 +5,27 @@ import 'package:flutter/material.dart';
 
 // model
 class DotaHero {
-  const DotaHero({
+  const DotaHero( {
     @required this.name,
     @required this.imagePath,
     @required this.views,
     @required this.color,
+    this.bio,
+    this.roles,
+    this.attackType,
+    this.primaryAttr,
+    this.levels,
   });
 
   final String name;
   final String imagePath;
   final String views;
+  final String bio;
+  final List<String> roles;
+  final AttackType attackType;
+  final PrimaryAttr primaryAttr;
   final MaterialColor color;
+  final List<HeroLevel> levels;
 
   static List<DotaHero> get favoriteHeroes => [
         DotaHero(
@@ -89,6 +99,33 @@ class DotaHero {
           color: Colors.blueGrey,
         ),
       ];
+}
+
+class HeroLevel {
+  HeroLevel({
+    @required this.name,
+    @required this.description,
+    @required this.imageUrl,
+  });
+
+  final String name;
+  final String description;
+  final String imageUrl;
+
+  @override
+  String toString() {
+    return 'HeroLevel{name: $name, description: $description, imageUrl: $imageUrl}';
+  }
+}
+
+enum AttackType {
+  melee,
+  range,
+}
+enum PrimaryAttr{
+  strength,
+  agility,
+  intelligence,
 }
 
 //main runner
