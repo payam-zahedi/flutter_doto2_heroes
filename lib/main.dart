@@ -165,7 +165,7 @@ class _FavoritePageState extends State<FavoritePage> with TickerProviderStateMix
                   children: [
                     Text(
                       'Learn your \nFavorite Hero',
-                      style: Theme.of(context).textTheme.display1.copyWith(
+                      style: Theme.of(context).textTheme.headline4.copyWith(
                             color: Theme.of(context).colorScheme.onBackground,
                             fontWeight: FontWeight.w900,
                           ),
@@ -392,14 +392,14 @@ class _HeroWidgetState extends State<HeroWidget> with SingleTickerProviderStateM
                   children: <Widget>[
                     Text(
                       widget.hero.name,
-                      style: Theme.of(context).textTheme.title.copyWith(
+                      style: Theme.of(context).textTheme.headline6.copyWith(
                             fontSize: 16,
                           ),
                     ),
                     SizedBox(height: 8),
                     Text(
                       '${widget.hero.views} Views',
-                      style: Theme.of(context).textTheme.body1.copyWith(
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(
                             fontSize: 12,
                           ),
                     ),
@@ -480,7 +480,7 @@ class DetailPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           hero.name,
-          style: Theme.of(context).textTheme.body1,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
         centerTitle: true,
         leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed: () {}),
