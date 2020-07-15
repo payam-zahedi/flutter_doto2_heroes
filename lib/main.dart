@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-
 // model
 class DotaHero {
   const DotaHero({
@@ -192,13 +191,19 @@ class _FavoritePageState extends State<FavoritePage> with TickerProviderStateMix
                     DotaHero.favoriteHeroes.length,
                     (index) {
                       final count = DotaHero.favoriteHeroes.length;
+                      final beginInterval = (1 / count) * index;
+                      final endInterval = 1.0;
                       final Animation<double> animation = Tween<double>(
                         begin: 0,
                         end: 1,
                       ).animate(
                         CurvedAnimation(
                           parent: animationController,
-                          curve: Interval((1 / count) * index, 1, curve: Curves.fastOutSlowIn),
+                          curve: Interval(
+                            beginInterval,
+                            endInterval,
+                            curve: Curves.fastOutSlowIn,
+                          ),
                         ),
                       );
 
@@ -257,24 +262,33 @@ class _HeroWidgetState extends State<HeroWidget> with SingleTickerProviderStateM
   @override
   void initState() {
     _clickController = AnimationController(
-      duration: Duration(milliseconds: 150),
+      duration: Duration(milliseconds: 300),
       vsync: this,
     );
 
     _imageAnimation = Tween<double>(
       begin: 16,
       end: 0,
-    ).animate(CurvedAnimation(parent: _clickController, curve: Curves.easeInSine));
+    ).animate(CurvedAnimation(
+      parent: _clickController,
+      curve: Curves.fastOutSlowIn,
+    ));
 
     _paddingAnimation = EdgeInsetsTween(
       begin: _beginPadding,
       end: _endPadding,
-    ).animate(CurvedAnimation(parent: _clickController, curve: Curves.easeInSine));
+    ).animate(CurvedAnimation(
+      parent: _clickController,
+      curve: Curves.fastOutSlowIn,
+    ));
 
     _fadeAnimation = Tween<double>(
       begin: 1,
       end: 0,
-    ).animate(CurvedAnimation(parent: _clickController, curve: Curves.easeInSine));
+    ).animate(CurvedAnimation(
+      parent: _clickController,
+      curve: Curves.fastOutSlowIn,
+    ));
 
     super.initState();
   }
@@ -348,7 +362,7 @@ class _HeroWidgetState extends State<HeroWidget> with SingleTickerProviderStateM
                     child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
                       fit: BoxFit.contain,
-                      image : widget.hero.imagePath,
+                      image: widget.hero.imagePath,
                     ),
                     animation: _imageAnimation,
                     builder: (BuildContext context, Widget child) {
