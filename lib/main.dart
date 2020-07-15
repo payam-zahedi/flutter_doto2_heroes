@@ -36,8 +36,7 @@ class IntroductionApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.dark,
-//      home: FavoritePage(),
-      home: DetailPage(hero: DotaHero.favoriteHeroes.first),
+      home: FavoritePage(),
     );
   }
 }
@@ -122,7 +121,16 @@ class _FavoritePageState extends State<FavoritePage> with TickerProviderStateMix
                       animationController.forward();
                       return HeroWidget(
                         hero: DotaHero.favoriteHeroes[index],
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => DetailPage(
+                                hero: DotaHero.favoriteHeroes.first,
+                              ),
+                            ),
+                          );
+                        },
                         transition: animation,
                         transitionController: animationController,
                       );
@@ -225,6 +233,7 @@ class _HeroWidgetState extends State<HeroWidget> with SingleTickerProviderStateM
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
+          if(widget?.onTap != null) widget.onTap();
           log('onTap');
         },
         onTapDown: (value) {
@@ -498,7 +507,6 @@ class DetailPage extends StatelessWidget {
                                 style: Theme.of(context).textTheme.bodyText2,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-
                               ),
                             ],
                           ),
@@ -513,8 +521,8 @@ class DetailPage extends StatelessWidget {
                 child: Text(
                   'Bio',
                   style: Theme.of(context).textTheme.bodyText1.copyWith(
-                    color: hero.color[300],
-                  ),
+                        color: hero.color[300],
+                      ),
                 ),
               ),
               SizedBox(height: 8),
@@ -523,8 +531,7 @@ class DetailPage extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   hero.bio,
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(
-                  ),
+                  style: Theme.of(context).textTheme.bodyText2.copyWith(),
                   textAlign: TextAlign.justify,
                 ),
               ),
