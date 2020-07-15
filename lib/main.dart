@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-
 //main runner
 void main() {
   runApp(IntroductionApp());
@@ -37,8 +36,8 @@ class IntroductionApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.dark,
-      home: FavoritePage(),
-//      home: DetailPage(hero: DotaHero.favoriteHeroes.first),
+//      home: FavoritePage(),
+      home: DetailPage(hero: DotaHero.favoriteHeroes.first),
     );
   }
 }
@@ -398,6 +397,36 @@ class DetailPage extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed: () {}),
       ),
+      body: Container(
+        color: Colors.grey,
+        constraints: BoxConstraints.expand(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                child: AspectRatio(
+                  aspectRatio: 1.3,
+                  child:Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        fit: BoxFit.contain,
+                        image:'https://i7.pngguru.com/preview/687/756/880/line-blue-vector-flow-line-background.jpg',
+                      ),
+                      FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        fit: BoxFit.contain,
+                        image:hero.imagePath,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -469,11 +498,9 @@ final Uint8List kTransparentImage = new Uint8List.fromList(<int>[
   0xAE,
 ]);
 
-
-
 // models
 class DotaHero {
-  const DotaHero( {
+  const DotaHero({
     @required this.name,
     @required this.imagePath,
     @required this.views,
@@ -496,92 +523,144 @@ class DotaHero {
   final List<HeroLevel> levels;
 
   static List<DotaHero> get favoriteHeroes => [
-    DotaHero(
-      name: 'Rubick',
-      imagePath:
-      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick/rubick.png',
-      views: '24k',
-      color: Colors.green,
-    ),
-    DotaHero(
-      name: 'Ogry',
-      imagePath:
-      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/ogry.png',
-      views: '24k',
-      color: Colors.indigo,
-    ),
-    DotaHero(
-      name: 'Slark',
-      imagePath:
-      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/slark.png',
-      views: '39k',
-      color: Colors.brown,
-    ),
-    DotaHero(
-      name: 'Void',
-      imagePath:
-      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/void.png',
-      views: '13k',
-      color: Colors.deepPurple,
-    ),
-    DotaHero(
-      name: 'Shadow Fiend',
-      imagePath:
-      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/sf.png',
-      views: '33k',
-      color: Colors.red,
-    ),
-    DotaHero(
-      name: 'Zeus',
-      imagePath:
-      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/zeus.png',
-      views: '24k',
-      color: Colors.blue,
-    ),
-    DotaHero(
-      name: 'Earth Shaker',
-      imagePath:
-      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/earth_shaker.png',
-      views: '33k',
-      color: Colors.orange,
-    ),
-    DotaHero(
-      name: 'Disruptor',
-      imagePath:
-      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/disruptor.png',
-      views: '33k',
-      color: Colors.teal,
-    ),
-    DotaHero(
-      name: 'Invoker',
-      imagePath:
-      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/invoker.png',
-      views: '33k',
-      color: Colors.lime,
-    ),
-    DotaHero(
-      name: 'Sven',
-      imagePath:
-      'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/sven.png',
-      views: '54k',
-      color: Colors.blueGrey,
-    ),
-  ];
+        DotaHero(
+          name: 'Rubick',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick/rubick.png',
+          views: '24k',
+          color: Colors.green,
+          bio:
+              "Any mage can cast a spell or two, and a few may even study long enough to become a wizard, but only the most talented are allowed to be recognized as a Magus."
+              " Yet as with any sorcerer's circle, a sense of community has never guaranteed competitive courtesy."
+              "Already a renowned duelist and scholar of the grander world of sorcery, it had never occurred to Rubick that he might perhaps be Magus material until he was in the midst of his seventh assassination attempt."
+              " As he casually tossed the twelfth of a string of would-be killers from a high balcony, it dawned on him how utterly unimaginative the attempts on his life had become."
+              " Where once the interruption of a fingersnap or firehand might have put a cheerful spring in his step, it had all become so very predictable. He craved greater competition. Therefore, donning his combat mask, he did what any wizard seeking to ascend the ranks would do: he announced his intention to kill a Magus."
+              "Rubick quickly discovered that to threaten one Magus is to threaten them all, and they fell upon him in force. Each antagonist's spell was an unstoppable torrent of energy, and every attack a calculated killing blow."
+              " But very soon something occurred that Rubick's foes found unexpected: their arts appeared to turn against them. Inside the magic maelstrom, Rubick chuckled, subtly reading and replicating the powers of one in order to cast it against another, sowing chaos among those who had allied against him."
+              " Accusations of betrayal began to fly, and soon the sorcerers turned one upon another without suspecting who was behind their undoing. When the battle finally drew to a close, all were singed and frozen, soaked and cut and pierced. More than one lay dead by an ally's craft. Rubick stood apart, sore but delighted in the week's festivities."
+              " None had the strength to argue when he presented his petition of assumption to the Hidden Council, and the Insubstantial Eleven agreed as one to grant him the title of Grand Magus.",
+          attackType: AttackType.range,
+          primaryAttr: PrimaryAttr.intelligence,
+          roles: ['Support', 'Disabler', 'Nuker'],
+          levels: [
+            HeroLevel(
+              name: 'Telekinesis',
+              description:
+                  'Rubick uses his telekinetic powers to lift the enemy into the air briefly and then hurls them back at the ground. The unit lands on the ground with such force that it stuns nearby enemies.',
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick/level1.png',
+              manaCost: '125',
+              coolDown: '34/30/26/22',
+            ),
+            HeroLevel(
+              name: 'Fade Bolt',
+              description:
+                  'Rubick creates a powerful stream of arcane energy that travels between enemy units, dealing damage and reducing their attack damage. Each jump deals less damage.',
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick/level2.png',
+              manaCost: '135/140/145/150',
+              coolDown: '16/14/12/10',
+            ),
+            HeroLevel(
+              name: 'Arcane Supremacy',
+              description:
+                  "Rubick's mastery of the arcane allows him to deal more spell damage and create spells that last longer on enemies.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick/level3.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Spell Steal',
+              description:
+                  "Rubick studies the trace magical essence of one enemy hero, learning the secrets of the last spell the hero cast. Rubick can use this spell as his own for several minutes or until he dies.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/rubick/level4.png',
+              manaCost: '25/25/25',
+              coolDown: ' 20/18/16',
+            ),
+          ],
+        ),
+        DotaHero(
+          name: 'Ogry',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/ogry.png',
+          views: '24k',
+          color: Colors.indigo,
+        ),
+        DotaHero(
+          name: 'Slark',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/slark.png',
+          views: '39k',
+          color: Colors.brown,
+        ),
+        DotaHero(
+          name: 'Void',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/void.png',
+          views: '13k',
+          color: Colors.deepPurple,
+        ),
+        DotaHero(
+          name: 'Shadow Fiend',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/sf.png',
+          views: '33k',
+          color: Colors.red,
+        ),
+        DotaHero(
+          name: 'Zeus',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/zeus.png',
+          views: '24k',
+          color: Colors.blue,
+        ),
+        DotaHero(
+          name: 'Earth Shaker',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/earth_shaker.png',
+          views: '33k',
+          color: Colors.orange,
+        ),
+        DotaHero(
+          name: 'Disruptor',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/disruptor.png',
+          views: '33k',
+          color: Colors.teal,
+        ),
+        DotaHero(
+          name: 'Invoker',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/invoker.png',
+          views: '33k',
+          color: Colors.lime,
+        ),
+        DotaHero(
+          name: 'Sven',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/sven.png',
+          views: '54k',
+          color: Colors.blueGrey,
+        ),
+      ];
 }
 
 class HeroLevel {
-  HeroLevel( {
+  HeroLevel({
     @required this.name,
     @required this.description,
     @required this.imageUrl,
-    this.manaCost, this.coolDown,
+    this.manaCost,
+    this.coolDown,
   });
 
   final String name;
   final String description;
   final String imageUrl;
   final String manaCost;
-  final int coolDown;
+  final String coolDown;
 
   @override
   String toString() {
@@ -593,7 +672,7 @@ enum AttackType {
   melee,
   range,
 }
-enum PrimaryAttr{
+enum PrimaryAttr {
   strength,
   agility,
   intelligence,
