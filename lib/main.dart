@@ -36,7 +36,9 @@ class IntroductionApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.dark,
-      home: FavoritePage(),
+      home: DetailPage(
+        hero: DotaHero.favoriteHeroes.first,
+      ),
     );
   }
 }
@@ -233,7 +235,7 @@ class _HeroWidgetState extends State<HeroWidget> with SingleTickerProviderStateM
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
-          if(widget?.onTap != null) widget.onTap();
+          if (widget?.onTap != null) widget.onTap();
           log('onTap');
         },
         onTapDown: (value) {
@@ -412,23 +414,34 @@ class DetailPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.shortestSide / 1.5,
                 child: AspectRatio(
                   aspectRatio: 1.3,
                   child: Stack(
                     fit: StackFit.expand,
                     children: <Widget>[
                       Opacity(
-                        opacity: 0.5,
-                        child: ColorFiltered(
-                          colorFilter: ColorFilter.mode(hero.color[400], BlendMode.modulate),
-                          child: FadeInImage.memoryNetwork(
-                            placeholder: kTransparentImage,
-                            fit: BoxFit.cover,
-                            image:
-                                'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/game/intelligence_background.png',
-                          ),
+                        opacity: 0.3,
+                        child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          fit: BoxFit.contain,
+                          image:
+                          'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/game/intelligence_background.png',
                         ),
                       ),
+//                      Opacity(
+//                        opacity: 0.5,
+//                        child: ColorFiltered(
+//                          colorFilter: ColorFilter.mode(hero.color[400], BlendMode.modulate),
+//                          child: FadeInImage.memoryNetwork(
+//                            placeholder: kTransparentImage,
+//                            fit: BoxFit.cover,
+//                            image:
+//                                'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/game/intelligence_background.png',
+//                          ),
+//                        ),
+//                      ),
                       FadeInImage.memoryNetwork(
                         placeholder: kTransparentImage,
                         fit: BoxFit.contain,
