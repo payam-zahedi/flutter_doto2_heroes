@@ -37,7 +37,7 @@ class IntroductionApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
       home: DetailPage(
-        hero: DotaHero.favoriteHeroes.first,
+        hero: DotaHero.favoriteHeroes[1],
       ),
     );
   }
@@ -427,7 +427,7 @@ class DetailPage extends StatelessWidget {
                           placeholder: kTransparentImage,
                           fit: BoxFit.contain,
                           image:
-                          'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/game/intelligence_background.png',
+                              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/game/intelligence_background.png',
                         ),
                       ),
 //                      Opacity(
@@ -712,6 +712,61 @@ class DotaHero {
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/ogry.png',
           views: '24k',
           color: Colors.indigo,
+          bio:
+              "The ordinary ogre is the creature for whom the phrase 'As dumb as a bag of rock hammers' was coined"
+              " In his natural state, an ogre is supremely incapable of doing or deciding anything. Clothed in dirt, he sometimes finds himself accidentally draped in animal skins after eating lanekill"
+              " Not an especially social creature, he is most often found affectionately consorting with the boulders or tree-stumps he has mistaken for kin (a factor that may explain the ogre's low rate of reproduction)."
+              " However, once every generation or so, the ogre race is blessed with the birth of a two-headed Ogre Magi, who is immediately given the traditional name of Aggron Stonebreak, the name of the first and perhaps only wise ogre in their line's history"
+              " With two heads, Ogre Magi finds it possible to function at a level most other creatures manage with one"
+              " And while the Ogre Magi will win no debates (even with itself), it is graced with a divine quality known as Dumb Luck--a propensity for serendipitous strokes of fortune which have allowed the ogre race to flourish in spite of enemies, harsh weather, and an inability to feed itself."
+              " It's as if the Goddess of Luck, filled with pity for the sadly inept species, has taken Ogre Magi under her wing. And who could blame her? Poor things.",
+          attackType: AttackType.melee,
+          primaryAttr: PrimaryAttr.intelligence,
+          roles: [
+            'Support',
+            'Nuker',
+            'Disabler',
+            'Durable',
+            'Initiator',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Fireblast',
+              description:
+                  "Blasts an enemy unit with a wave of fire, dealing damage and stunning the target.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level1.png',
+              manaCost: '75/85/95/105',
+              coolDown: '11/10/9/8',
+            ),
+            HeroLevel(
+              name: 'Ignite',
+              description:
+                  "Drenches the target and another random unit in volatile chemicals, causing it to burst into flames. The target is in immense pain, taking damage and moving more slowly.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level2.png',
+              manaCost: '90',
+              coolDown: '15',
+            ),
+            HeroLevel(
+              name: 'Bloodlust',
+              description:
+                  "Incites a frenzy in a friendly unit, increasing its movement speed and attack speed. Gives bonus attacks speed if cast on Ogre himself. Can be cast on towers.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level3.png',
+              manaCost: '65',
+              coolDown: '20/18/16/14',
+            ),
+            HeroLevel(
+              name: 'Multicast',
+              description:
+                  "Enables Ogre Magi to cast his abilities and items multiple times with each use.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level4.png',
+              manaCost: '0',
+              coolDown: ' 0',
+            ),
+          ],
         ),
         DotaHero(
           name: 'Slark',
@@ -719,6 +774,59 @@ class DotaHero {
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/slark.png',
           views: '39k',
           color: Colors.brown,
+          bio:
+              "Little known to the inhabitants of the dry world, Dark Reef is a sunken prison where the worst of the sea-bred are sent for crimes against their fellows."
+              " It is a razor barbed warren full of murderous slithereen, treacherous Deep Ones, sociopathic meranths. In this dim labyrinth, patrolled by eels and guarded by enormous anemones, only the vicious survive."
+              " Pitched into Dark Reef for crimes unknown, Slark spent half a lifetime without kin or kindness, trusting no one, surviving through a combination of stealth and ruthlessness, keeping his thoughts and his plans to himself."
+              " When the infamous Dark Reef Dozen plotted their ill-fated breakout, they kept their plans a perfect secret, murdering anyone who could have put the pieces together--but somehow Slark discovered their scheme and made a place for himself in it. Ten of the Dozen died in the escape attempt, and two were captured, hauled back to Dark Reef, then executed for the entertainment of their fellow inmates."
+              " But Slark, the unsung thirteenth, used the commotion as cover and slipped away, never to be caught. Now a furtive resident of the carnivorous mangrove scrub that grips the southern reach of Shadeshore, Slark remains the only successful escapee from Dark Reef.",
+          attackType: AttackType.melee,
+          primaryAttr: PrimaryAttr.agility,
+          roles: [
+            'Carry ',
+            'Escape ',
+            'Disabler',
+            'Nuker',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Dark Pact',
+              description:
+                  "After a short delay, Slark sacrifices some of his life blood, purging most negative debuffs and dealing damage to enemy units around him and to himself. Slark only takes 50% of the damage. DISPEL TYPE: Strong Dispel",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level1.png',
+              manaCost: '60',
+              coolDown: '9/8/7/6',
+            ),
+            HeroLevel(
+              name: 'Pounce',
+              description:
+                  "Slark leaps forward, grabbing the first hero he connects with. That unit is leashed, and can only move a limited distance away from Slark's landing position.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level2.png',
+              manaCost: '75/75/75/75',
+              coolDown: '20/16/12/8',
+            ),
+            HeroLevel(
+              name: 'Essence Shift',
+              description:
+                  "Slark steals the life essence of enemy heroes with his attacks, draining each of their attributes and converting them to bonus Agility. If Slark kills an affected enemy hero, he permanently steals 1 Agility.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level3.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Shadow Dance',
+              description:
+                  "When used, Slark hides himself in a cloud of shadows, becoming immune to detection. Attacking, casting spells, and using items will not reveal Slark. "
+                  "Passively, when not visible to the enemy team, Slark gains bonus movement speed and health regeneration.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level4.png',
+              manaCost: '120/120/120',
+              coolDown: '80/70/60',
+            ),
+          ],
         ),
         DotaHero(
           name: 'Void',
@@ -726,6 +834,57 @@ class DotaHero {
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/void.png',
           views: '13k',
           color: Colors.deepPurple,
+          bio: "Darkterror the Faceless Void is a visitor from Claszureme, a realm outside of time."
+              " It remains a mystery why this being from another dimension believes the struggle for the Nemesis Stones is worth entering our physical plane, but apparently an upset in the balance of power in this world has repercussions in adjacent dimensions."
+              " Time means nothing to Darkterror, except as a way to thwart his foes and aid his allies. His long-view of the cosmos has given him a remote, disconnected quality, although in battle he is quite capable of making it personal.",
+          attackType: AttackType.melee,
+          primaryAttr: PrimaryAttr.agility,
+          roles: [
+            'Carry ',
+            'Initiator ',
+            'Disabler',
+            'Escape ',
+            'Durable ',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Time Walk',
+              description:
+                  "Rushes to a target location while backtracking any damage taken the last 2 seconds.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/level1.png',
+              manaCost: '40',
+              coolDown: '24/18/12/6',
+            ),
+            HeroLevel(
+              name: 'Time Dilation',
+              description:
+                  "Faceless Void traps all nearby enemies in a time dilation field for 8 seconds, extending their cooldowns and slowing their movement and attack speed by 10% for each cooldown extended.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/level2.png',
+              manaCost: '75',
+              coolDown: '40/34/28/22',
+            ),
+            HeroLevel(
+              name: 'Time Lock',
+              description:
+                  "Adds the chance for an attack to lock an enemy unit in time while attacking it a second time.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/level3.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Chronosphere',
+              description:
+                  "Creates a blister in spacetime, trapping all units caught in its sphere of influence and causes you to move very quickly inside it."
+                  " Only Faceless Void and any units he controls are unaffected. Invisible enemies in the sphere will be revealed.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/level4.png',
+              manaCost: '150/225/300',
+              coolDown: '160',
+            ),
+          ],
         ),
         DotaHero(
           name: 'Shadow Fiend',
@@ -733,6 +892,56 @@ class DotaHero {
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/sf.png',
           views: '33k',
           color: Colors.red,
+          bio:
+              "It is said that Nevermore the Shadow Fiend has the soul of a poet, and in fact he has thousands of them."
+              " Over the ages he has claimed the souls of poets, priests, emperors, beggars, slaves, philosophers, criminals and (naturally) heroes; no sort of soul escapes him."
+              " What he does with them is unknown. No one has ever peered into the Abysm whence Nevermore reaches out like an eel from among astral rocks. Does he devour them one after another?"
+              " Does he mount them along the halls of an eldritch temple, or pickle the souls in necromantic brine? Is he merely a puppet, pushed through the dimensional rift by a demonic puppeteer?"
+              " Such is his evil, so intense his aura of darkness, that no rational mind may penetrate it. Of course, if you really want to know where the stolen souls go, there's one sure way to find out: Add your soul to his collection. Or just wait for Nevermore.",
+          attackType: AttackType.range,
+          primaryAttr: PrimaryAttr.agility,
+          roles: [
+            'Carry ',
+            'Nuker',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Shadowraze',
+              description:
+              "Shadow Fiend razes the ground directly in front of him, dealing damage to enemy units in the area."
+                  " Adds a stacking damage amplifier on the target that causes the enemy to take bonus Shadow Raze damage per stack.",
+              imageUrl:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level1.png',
+              manaCost: '90',
+              coolDown: '10',
+            ),
+            HeroLevel(
+              name: 'Necromastery',
+              description:"Shadow Fiend steals the soul from units he kills, gaining bonus damage. If the killed unit is a hero, he gains an additional 1 bonus souls. On death, he releases half of them from bondage.",
+              imageUrl:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level2.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Presence of the Dark Lord',
+              description:
+              "Shadow Fiend's presence reduces the armor of nearby enemies.",
+              imageUrl:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level3.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Requiem of Souls',
+              description:"Shadow Fiend gathers his captured souls to release them as lines of demonic energy. Units near Shadow Fiend when the souls are released can be damaged by several lines of energy."
+                  " Any unit damaged by Requiem of Souls will be feared and have its movement speed reduced for 0.8 seconds for each line hit. Lines of energy are created for every 1 souls captured through Necromastery.",
+              imageUrl:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level4.png',
+              manaCost: '150/175/200',
+              coolDown: '120/110/100',
+            ),
+          ],
         ),
         DotaHero(
           name: 'Zeus',
@@ -740,6 +949,55 @@ class DotaHero {
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/zeus.png',
           views: '24k',
           color: Colors.blue,
+          bio:
+              "Lord of Heaven, father of gods, Zeus treats all the Heroes as if they are his rambunctious, rebellious children."
+                  " After being caught unnumbered times in the midst of trysts with countless mortal women,"
+                  " his divine wife finally gave him an ultimatum: 'If you love mortals so much, go and become one."
+                  " If you can prove yourself faithful, then return to me as my immortal husband. Otherwise, go and die among your creatures.' Zeus found her logic (and her magic) irrefutable,"
+                  " and agreed to her plan. He has been on his best behavior ever since, being somewhat fonder of immortality than he is of mortals."
+                  " But to prove himself worthy of his eternal spouse, he must continue to pursue victory on the field of battle.",
+          attackType: AttackType.range,
+          primaryAttr: PrimaryAttr.intelligence,
+          roles: [
+            'Nuker',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Arc Lightning',
+              description:"Hurls a bolt of lightning that leaps through nearby enemy units.",
+              imageUrl:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level1.png',
+              manaCost: '80',
+              coolDown: '1.60',
+            ),
+            HeroLevel(
+              name: 'Lightning Bolt',
+              description:"Calls down a bolt of lightning to strike an enemy unit, causing damage and a mini-stun. When cast,"
+                  " Lightning Bolt briefly provides unobstructed vision and True Sight around the target in a 750 radius. Can be cast on the ground, affecting the closest enemy hero in 325 range.",
+              imageUrl:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level2.png',
+              manaCost: '125/130/135/140',
+              coolDown: '6',
+            ),
+            HeroLevel(
+              name: 'Static Field',
+              description:
+              "Zeus shocks any enemy hit by his abilities, causing damage proportional to their current health.",
+              imageUrl:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level3.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: "Thundergod's Wrath",
+              description:"Strikes all enemy heroes with a bolt of lightning, no matter where they may be."
+                  " Thundergod's Wrath also provides True Sight around each hero struck. If an enemy hero is invisible, it takes no damage, but the True Sight is still created at that hero's location.",
+              imageUrl:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level4.png',
+              manaCost: '250/350/450',
+              coolDown: '120',
+            ),
+          ],
         ),
         DotaHero(
           name: 'Earth Shaker',
