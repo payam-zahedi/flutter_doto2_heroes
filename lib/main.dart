@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 //main runner
@@ -404,11 +405,13 @@ class DetailPage extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText2,
         ),
         centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed: () {
-          if(Navigator.canPop(context)){
-              Navigator.pop(context);
-          }
-        }),
+        leading: IconButton(
+            icon: Icon(Icons.keyboard_arrow_left),
+            onPressed: () {
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              }
+            }),
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
@@ -428,8 +431,10 @@ class DetailPage extends StatelessWidget {
                         child: FadeInImage.memoryNetwork(
                           placeholder: kTransparentImage,
                           fit: BoxFit.contain,
-                          image:
-                              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/game/intelligence_background.png',
+                          image: detailBackgroundUrl.replaceAll(
+                            '{{ability}}',
+                            hero.primaryAttr.toString().split('.').last,
+                          ),
                         ),
                       ),
 //                      Opacity(
@@ -451,29 +456,60 @@ class DetailPage extends StatelessWidget {
                       ),
                       Align(
                         alignment: Alignment.bottomLeft,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                              child: Text(
-                                hero.name,
-                                style: Theme.of(context).textTheme.headline5.copyWith(
-                                      fontWeight: FontWeight.w700,
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                                    child: Text(
+                                      hero.name,
+                                      style: Theme.of(context).textTheme.headline5.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                          ),
                                     ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+                                    margin: EdgeInsets.symmetric(horizontal: 16),
+                                    decoration: BoxDecoration(
+                                      color: hero.color[400],
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Text(
+                                      hero.roles.join(', '),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(height: 8),
                             Container(
-                              padding: EdgeInsets.all(8),
-                              margin: EdgeInsets.symmetric(horizontal: 16),
-                              decoration: BoxDecoration(
-                                color: hero.color[400],
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                hero.roles.join(', '),
+                              margin: const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: ClipOval(
+                                      child: FadeInImage.memoryNetwork(
+                                        placeholder: kTransparentImage,
+                                        fit: BoxFit.cover,
+                                        image: abilityImage.replaceAll(
+                                          '{{ability}}',
+                                          hero.primaryAttr.toString().split('.').last,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(hero.primaryAttr.toString().split('.').last),
+                                ],
                               ),
                             ),
                           ],
@@ -550,6 +586,7 @@ class DetailPage extends StatelessWidget {
                   textAlign: TextAlign.justify,
                 ),
               ),
+              SizedBox(height: 24),
             ],
           ),
         ),
@@ -557,6 +594,12 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
+// constants
+
+const String detailBackgroundUrl =
+    "https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/game/{{ability}}_background.png";
+const String abilityImage =
+    "https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/game/{{ability}}.jpg";
 
 final Uint8List kTransparentImage = new Uint8List.fromList(<int>[
   0x89,
@@ -709,124 +752,65 @@ class DotaHero {
           ],
         ),
         DotaHero(
-          name: 'Ogry',
+          name: 'Earth Shaker',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/ogry.png',
-          views: '24k',
-          color: Colors.indigo,
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/earth_shaker.png',
+          views: '33k',
+          color: Colors.orange,
           bio:
-              "The ordinary ogre is the creature for whom the phrase 'As dumb as a bag of rock hammers' was coined"
-              " In his natural state, an ogre is supremely incapable of doing or deciding anything. Clothed in dirt, he sometimes finds himself accidentally draped in animal skins after eating lanekill"
-              " Not an especially social creature, he is most often found affectionately consorting with the boulders or tree-stumps he has mistaken for kin (a factor that may explain the ogre's low rate of reproduction)."
-              " However, once every generation or so, the ogre race is blessed with the birth of a two-headed Ogre Magi, who is immediately given the traditional name of Aggron Stonebreak, the name of the first and perhaps only wise ogre in their line's history"
-              " With two heads, Ogre Magi finds it possible to function at a level most other creatures manage with one"
-              " And while the Ogre Magi will win no debates (even with itself), it is graced with a divine quality known as Dumb Luck--a propensity for serendipitous strokes of fortune which have allowed the ogre race to flourish in spite of enemies, harsh weather, and an inability to feed itself."
-              " It's as if the Goddess of Luck, filled with pity for the sadly inept species, has taken Ogre Magi under her wing. And who could blame her? Poor things.",
+              "Like a golem or gargoyle, Earthshaker was one with the earth but now walks freely upon it."
+              " Unlike those other entities, he created himself through an act of will, and serves no other master."
+              " In restless slumbers, encased in a deep seam of stone, he became aware of the life drifting freely above him. He grew curious."
+              " During a season of tremors, the peaks of Nishai shook themselves loose of avalanches,"
+              " shifting the course of rivers and turning shallow valleys into bottomless chasms. When the land finally ceased quaking,"
+              " Earthshaker stepped from the settling dust, tossing aside massive boulders as if throwing off a light blanket. He had shaped himself in the image of a mortal beast,"
+              " and named himself Raigor Stonehoof. He bleeds now, and breathes, and therefore he can die."
+              " But his spirit is still that of the earth; he carries its power in the magical totem that never leaves him."
+              " And on the day he returns to dust, the earth will greet him as a prodigal son.",
           attackType: AttackType.melee,
-          primaryAttr: PrimaryAttr.intelligence,
+          primaryAttr: PrimaryAttr.strength,
           roles: [
             'Support',
-            'Nuker',
-            'Disabler',
-            'Durable',
             'Initiator',
-          ],
-          levels: [
-            HeroLevel(
-              name: 'Fireblast',
-              description:
-                  "Blasts an enemy unit with a wave of fire, dealing damage and stunning the target.",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level1.png',
-              manaCost: '75/85/95/105',
-              coolDown: '11/10/9/8',
-            ),
-            HeroLevel(
-              name: 'Ignite',
-              description:
-                  "Drenches the target and another random unit in volatile chemicals, causing it to burst into flames. The target is in immense pain, taking damage and moving more slowly.",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level2.png',
-              manaCost: '90',
-              coolDown: '15',
-            ),
-            HeroLevel(
-              name: 'Bloodlust',
-              description:
-                  "Incites a frenzy in a friendly unit, increasing its movement speed and attack speed. Gives bonus attacks speed if cast on Ogre himself. Can be cast on towers.",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level3.png',
-              manaCost: '65',
-              coolDown: '20/18/16/14',
-            ),
-            HeroLevel(
-              name: 'Multicast',
-              description:
-                  "Enables Ogre Magi to cast his abilities and items multiple times with each use.",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level4.png',
-              manaCost: '0',
-              coolDown: ' 0',
-            ),
-          ],
-        ),
-        DotaHero(
-          name: 'Slark',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/slark.png',
-          views: '39k',
-          color: Colors.brown,
-          bio:
-              "Little known to the inhabitants of the dry world, Dark Reef is a sunken prison where the worst of the sea-bred are sent for crimes against their fellows."
-              " It is a razor barbed warren full of murderous slithereen, treacherous Deep Ones, sociopathic meranths. In this dim labyrinth, patrolled by eels and guarded by enormous anemones, only the vicious survive."
-              " Pitched into Dark Reef for crimes unknown, Slark spent half a lifetime without kin or kindness, trusting no one, surviving through a combination of stealth and ruthlessness, keeping his thoughts and his plans to himself."
-              " When the infamous Dark Reef Dozen plotted their ill-fated breakout, they kept their plans a perfect secret, murdering anyone who could have put the pieces together--but somehow Slark discovered their scheme and made a place for himself in it. Ten of the Dozen died in the escape attempt, and two were captured, hauled back to Dark Reef, then executed for the entertainment of their fellow inmates."
-              " But Slark, the unsung thirteenth, used the commotion as cover and slipped away, never to be caught. Now a furtive resident of the carnivorous mangrove scrub that grips the southern reach of Shadeshore, Slark remains the only successful escapee from Dark Reef.",
-          attackType: AttackType.melee,
-          primaryAttr: PrimaryAttr.agility,
-          roles: [
-            'Carry ',
-            'Escape ',
             'Disabler',
             'Nuker',
           ],
           levels: [
             HeroLevel(
-              name: 'Dark Pact',
+              name: 'Fissure',
               description:
-                  "After a short delay, Slark sacrifices some of his life blood, purging most negative debuffs and dealing damage to enemy units around him and to himself. Slark only takes 50% of the damage. DISPEL TYPE: Strong Dispel",
+                  "Slams the ground with a mighty totem, creating an impassable ridge of stone while stunning and damaging enemy units along its line.",
               imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level1.png',
-              manaCost: '60',
-              coolDown: '9/8/7/6',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level1.png',
+              manaCost: '110/130/150/170',
+              coolDown: '21/19/17/15',
             ),
             HeroLevel(
-              name: 'Pounce',
+              name: 'Enchant Totem',
               description:
-                  "Slark leaps forward, grabbing the first hero he connects with. That unit is leashed, and can only move a limited distance away from Slark's landing position.",
+                  "Empowers Earthshaker's totem, causing it to deal extra damage and have 75 bonus attack range on the next attack.",
               imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level2.png',
-              manaCost: '75/75/75/75',
-              coolDown: '20/16/12/8',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level2.png',
+              manaCost: '35/40/45/50',
+              coolDown: '5',
             ),
             HeroLevel(
-              name: 'Essence Shift',
+              name: 'Aftershock',
               description:
-                  "Slark steals the life essence of enemy heroes with his attacks, draining each of their attributes and converting them to bonus Agility. If Slark kills an affected enemy hero, he permanently steals 1 Agility.",
+                  "Causes the earth to shake underfoot, adding additional damage and stuns to nearby enemy units when Earthshaker casts his abilities.",
               imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level3.png',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level3.png',
               manaCost: '0',
               coolDown: '0',
             ),
             HeroLevel(
-              name: 'Shadow Dance',
+              name: "Echo Slam",
               description:
-                  "When used, Slark hides himself in a cloud of shadows, becoming immune to detection. Attacking, casting spells, and using items will not reveal Slark. "
-                  "Passively, when not visible to the enemy team, Slark gains bonus movement speed and health regeneration.",
+                  "Shockwaves travel through the ground, damaging enemy units. Each enemy hit causes an echo to damage nearby units. Real heroes cause two echoes.",
               imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level4.png',
-              manaCost: '120/120/120',
-              coolDown: '80/70/60',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level4.png',
+              manaCost: '145/205/265',
+              coolDown: '150/130/110',
             ),
           ],
         ),
@@ -885,6 +869,68 @@ class DotaHero {
                   'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/void/level4.png',
               manaCost: '150/225/300',
               coolDown: '160',
+            ),
+          ],
+        ),
+        DotaHero(
+          name: 'Ogry',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/ogry.png',
+          views: '24k',
+          color: Colors.indigo,
+          bio:
+              "The ordinary ogre is the creature for whom the phrase 'As dumb as a bag of rock hammers' was coined"
+              " In his natural state, an ogre is supremely incapable of doing or deciding anything. Clothed in dirt, he sometimes finds himself accidentally draped in animal skins after eating lanekill"
+              " Not an especially social creature, he is most often found affectionately consorting with the boulders or tree-stumps he has mistaken for kin (a factor that may explain the ogre's low rate of reproduction)."
+              " However, once every generation or so, the ogre race is blessed with the birth of a two-headed Ogre Magi, who is immediately given the traditional name of Aggron Stonebreak, the name of the first and perhaps only wise ogre in their line's history"
+              " With two heads, Ogre Magi finds it possible to function at a level most other creatures manage with one"
+              " And while the Ogre Magi will win no debates (even with itself), it is graced with a divine quality known as Dumb Luck--a propensity for serendipitous strokes of fortune which have allowed the ogre race to flourish in spite of enemies, harsh weather, and an inability to feed itself."
+              " It's as if the Goddess of Luck, filled with pity for the sadly inept species, has taken Ogre Magi under her wing. And who could blame her? Poor things.",
+          attackType: AttackType.melee,
+          primaryAttr: PrimaryAttr.intelligence,
+          roles: [
+            'Support',
+            'Nuker',
+            'Disabler',
+            'Durable',
+            'Initiator',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Fireblast',
+              description:
+                  "Blasts an enemy unit with a wave of fire, dealing damage and stunning the target.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level1.png',
+              manaCost: '75/85/95/105',
+              coolDown: '11/10/9/8',
+            ),
+            HeroLevel(
+              name: 'Ignite',
+              description:
+                  "Drenches the target and another random unit in volatile chemicals, causing it to burst into flames. The target is in immense pain, taking damage and moving more slowly.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level2.png',
+              manaCost: '90',
+              coolDown: '15',
+            ),
+            HeroLevel(
+              name: 'Bloodlust',
+              description:
+                  "Incites a frenzy in a friendly unit, increasing its movement speed and attack speed. Gives bonus attacks speed if cast on Ogre himself. Can be cast on towers.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level3.png',
+              manaCost: '65',
+              coolDown: '20/18/16/14',
+            ),
+            HeroLevel(
+              name: 'Multicast',
+              description:
+                  "Enables Ogre Magi to cast his abilities and items multiple times with each use.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/ogry/level4.png',
+              manaCost: '0',
+              coolDown: ' 0',
             ),
           ],
         ),
@@ -1005,65 +1051,126 @@ class DotaHero {
           ],
         ),
         DotaHero(
-          name: 'Earth Shaker',
+          name: 'Sven',
           imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/earth_shaker.png',
-          views: '33k',
-          color: Colors.orange,
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/sven.png',
+          views: '54k',
+          color: Colors.cyan,
           bio:
-              "Like a golem or gargoyle, Earthshaker was one with the earth but now walks freely upon it."
-              " Unlike those other entities, he created himself through an act of will, and serves no other master."
-              " In restless slumbers, encased in a deep seam of stone, he became aware of the life drifting freely above him. He grew curious."
-              " During a season of tremors, the peaks of Nishai shook themselves loose of avalanches,"
-              " shifting the course of rivers and turning shallow valleys into bottomless chasms. When the land finally ceased quaking,"
-              " Earthshaker stepped from the settling dust, tossing aside massive boulders as if throwing off a light blanket. He had shaped himself in the image of a mortal beast,"
-              " and named himself Raigor Stonehoof. He bleeds now, and breathes, and therefore he can die."
-              " But his spirit is still that of the earth; he carries its power in the magical totem that never leaves him."
-              " And on the day he returns to dust, the earth will greet him as a prodigal son.",
+              "Sven is the bastard son of a Vigil Knight, born of a Pallid Meranth, raised in the Shadeshore Ruins."
+              " With his father executed for violating the Vigil Codex, and his mother shunned by her wild race,"
+              " Sven believes that honor is to be found in no social order, but only in himself."
+              " After tending his mother through a lingering death, he offered himself as a novice to the Vigil Knights,"
+              " never revealing his identity. For thirteen years he studied in his father's school,"
+              " mastering the rigid code that declared his existence an abomination. Then, on the day that should have been his In-Swearing,"
+              " he seized the Outcast Blade, shattered the Sacred Helm, and burned the Codex in the Vigil's Holy Flame. He strode from Vigil Keep,"
+              " forever solitary, following his private code to the last strict rune. Still a knight, yes...but a Rogue Knight. He answers only to himself.",
           attackType: AttackType.melee,
           primaryAttr: PrimaryAttr.strength,
           roles: [
-            'Support',
+            'Carry',
+            'Disabler',
             'Initiator',
+            'Durable',
+            'Nuker',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Storm Hammer',
+              description:
+                  "Sven unleashes his magical gauntlet that deals damage and stuns enemy units in a small area around the target.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level1.png',
+              manaCost: '110/120/130/140',
+              coolDown: '18/16/14/12',
+            ),
+            HeroLevel(
+              name: 'Great Cleave',
+              description:
+                  "Sven strikes with great force, cleaving all nearby enemy units with his attack.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level2.png',
+              manaCost: '0/0/0/0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Warcry',
+              description:
+                  "Sven's Warcry heartens his allied heroes for battle, increasing their armor and damage."
+                  " Additionally increases Sven's own movement speed. Lasts 8 seconds.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level3.png',
+              manaCost: '30/40/50/60',
+              coolDown: '32/28/24/20',
+            ),
+            HeroLevel(
+              name: "God's Strength",
+              description:
+                  "Sven channels his rogue strength, granting bonus strength and damage for %abilityduration% seconds.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level4.png',
+              manaCost: '100/150/200',
+              coolDown: '110',
+            ),
+          ],
+        ),
+        DotaHero(
+          name: 'Slark',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/slark.png',
+          views: '39k',
+          color: Colors.brown,
+          bio:
+              "Little known to the inhabitants of the dry world, Dark Reef is a sunken prison where the worst of the sea-bred are sent for crimes against their fellows."
+              " It is a razor barbed warren full of murderous slithereen, treacherous Deep Ones, sociopathic meranths. In this dim labyrinth, patrolled by eels and guarded by enormous anemones, only the vicious survive."
+              " Pitched into Dark Reef for crimes unknown, Slark spent half a lifetime without kin or kindness, trusting no one, surviving through a combination of stealth and ruthlessness, keeping his thoughts and his plans to himself."
+              " When the infamous Dark Reef Dozen plotted their ill-fated breakout, they kept their plans a perfect secret, murdering anyone who could have put the pieces together--but somehow Slark discovered their scheme and made a place for himself in it. Ten of the Dozen died in the escape attempt, and two were captured, hauled back to Dark Reef, then executed for the entertainment of their fellow inmates."
+              " But Slark, the unsung thirteenth, used the commotion as cover and slipped away, never to be caught. Now a furtive resident of the carnivorous mangrove scrub that grips the southern reach of Shadeshore, Slark remains the only successful escapee from Dark Reef.",
+          attackType: AttackType.melee,
+          primaryAttr: PrimaryAttr.agility,
+          roles: [
+            'Carry ',
+            'Escape ',
             'Disabler',
             'Nuker',
           ],
           levels: [
             HeroLevel(
-              name: 'Fissure',
+              name: 'Dark Pact',
               description:
-                  "Slams the ground with a mighty totem, creating an impassable ridge of stone while stunning and damaging enemy units along its line.",
+                  "After a short delay, Slark sacrifices some of his life blood, purging most negative debuffs and dealing damage to enemy units around him and to himself. Slark only takes 50% of the damage. DISPEL TYPE: Strong Dispel",
               imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level1.png',
-              manaCost: '110/130/150/170',
-              coolDown: '21/19/17/15',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level1.png',
+              manaCost: '60',
+              coolDown: '9/8/7/6',
             ),
             HeroLevel(
-              name: 'Enchant Totem',
+              name: 'Pounce',
               description:
-                  "Empowers Earthshaker's totem, causing it to deal extra damage and have 75 bonus attack range on the next attack.",
+                  "Slark leaps forward, grabbing the first hero he connects with. That unit is leashed, and can only move a limited distance away from Slark's landing position.",
               imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level2.png',
-              manaCost: '35/40/45/50',
-              coolDown: '5',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level2.png',
+              manaCost: '75/75/75/75',
+              coolDown: '20/16/12/8',
             ),
             HeroLevel(
-              name: 'Aftershock',
+              name: 'Essence Shift',
               description:
-                  "Causes the earth to shake underfoot, adding additional damage and stuns to nearby enemy units when Earthshaker casts his abilities.",
+                  "Slark steals the life essence of enemy heroes with his attacks, draining each of their attributes and converting them to bonus Agility. If Slark kills an affected enemy hero, he permanently steals 1 Agility.",
               imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level3.png',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level3.png',
               manaCost: '0',
               coolDown: '0',
             ),
             HeroLevel(
-              name: "Echo Slam",
+              name: 'Shadow Dance',
               description:
-                  "Shockwaves travel through the ground, damaging enemy units. Each enemy hit causes an echo to damage nearby units. Real heroes cause two echoes.",
+                  "When used, Slark hides himself in a cloud of shadows, becoming immune to detection. Attacking, casting spells, and using items will not reveal Slark. "
+                  "Passively, when not visible to the enemy team, Slark gains bonus movement speed and health regeneration.",
               imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level4.png',
-              manaCost: '145/205/265',
-              coolDown: '150/130/110',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level4.png',
+              manaCost: '120/120/120',
+              coolDown: '80/70/60',
             ),
           ],
         ),
@@ -1072,7 +1179,7 @@ class DotaHero {
           imagePath:
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/disruptor.png',
           views: '33k',
-          color: Colors.teal,
+          color: Colors.blue,
           bio:
               "High on the wind-ravaged steppes of Druud, a gifted young stormcrafter called Disruptor was the first to unlock the secrets of the summer squalls."
               " Constantly under assault from both seasonal storms and encroachment from civilized kingdoms to the South, the upland Oglodi have for centuries struggled to subsist atop the endless tablelands."
@@ -1197,70 +1304,6 @@ class DotaHero {
                   'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/level3.png',
               manaCost: '0',
               coolDown: '0',
-            ),
-          ],
-        ),
-        DotaHero(
-          name: 'Sven',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/sven.png',
-          views: '54k',
-          color: Colors.blueGrey,
-          bio:
-              "Sven is the bastard son of a Vigil Knight, born of a Pallid Meranth, raised in the Shadeshore Ruins."
-              " With his father executed for violating the Vigil Codex, and his mother shunned by her wild race,"
-              " Sven believes that honor is to be found in no social order, but only in himself."
-              " After tending his mother through a lingering death, he offered himself as a novice to the Vigil Knights,"
-              " never revealing his identity. For thirteen years he studied in his father's school,"
-              " mastering the rigid code that declared his existence an abomination. Then, on the day that should have been his In-Swearing,"
-              " he seized the Outcast Blade, shattered the Sacred Helm, and burned the Codex in the Vigil's Holy Flame. He strode from Vigil Keep,"
-              " forever solitary, following his private code to the last strict rune. Still a knight, yes...but a Rogue Knight. He answers only to himself.",
-          attackType: AttackType.melee,
-          primaryAttr: PrimaryAttr.strength,
-          roles: [
-            'Carry',
-            'Disabler',
-            'Initiator',
-            'Durable',
-            'Nuker',
-          ],
-          levels: [
-            HeroLevel(
-              name: 'Storm Hammer',
-              description:
-                  "Sven unleashes his magical gauntlet that deals damage and stuns enemy units in a small area around the target.",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level1.png',
-              manaCost: '110/120/130/140',
-              coolDown: '18/16/14/12',
-            ),
-            HeroLevel(
-              name: 'Great Cleave',
-              description:
-                  "Sven strikes with great force, cleaving all nearby enemy units with his attack.",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level2.png',
-              manaCost: '0/0/0/0',
-              coolDown: '0',
-            ),
-            HeroLevel(
-              name: 'Warcry',
-              description:
-                  "Sven's Warcry heartens his allied heroes for battle, increasing their armor and damage."
-                  " Additionally increases Sven's own movement speed. Lasts 8 seconds.",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level3.png',
-              manaCost: '30/40/50/60',
-              coolDown: '32/28/24/20',
-            ),
-            HeroLevel(
-              name: "God's Strength",
-              description:
-                  "Sven channels his rogue strength, granting bonus strength and damage for %abilityduration% seconds.",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level4.png',
-              manaCost: '100/150/200',
-              coolDown: '110',
             ),
           ],
         ),
