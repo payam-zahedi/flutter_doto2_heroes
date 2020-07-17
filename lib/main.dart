@@ -36,9 +36,7 @@ class IntroductionApp extends StatelessWidget {
         ),
       ),
       themeMode: ThemeMode.dark,
-      home: DetailPage(
-        hero: DotaHero.favoriteHeroes[1],
-      ),
+      home: FavoritePage(),
     );
   }
 }
@@ -128,7 +126,7 @@ class _FavoritePageState extends State<FavoritePage> with TickerProviderStateMix
                             context,
                             MaterialPageRoute(
                               builder: (_) => DetailPage(
-                                hero: DotaHero.favoriteHeroes.first,
+                                hero: DotaHero.favoriteHeroes[index],
                               ),
                             ),
                           );
@@ -406,7 +404,11 @@ class DetailPage extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText2,
         ),
         centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed: () {}),
+        leading: IconButton(icon: Icon(Icons.keyboard_arrow_left), onPressed: () {
+          if(Navigator.canPop(context)){
+              Navigator.pop(context);
+          }
+        }),
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
@@ -630,11 +632,11 @@ class DotaHero {
     @required this.imagePath,
     @required this.views,
     @required this.color,
-    this.bio,
-    this.roles,
-    this.attackType,
-    this.primaryAttr,
-    this.levels,
+    @required this.bio,
+    @required this.roles,
+    @required this.attackType,
+    @required this.primaryAttr,
+    @required this.levels,
   });
 
   final String name;
@@ -908,36 +910,37 @@ class DotaHero {
             HeroLevel(
               name: 'Shadowraze',
               description:
-              "Shadow Fiend razes the ground directly in front of him, dealing damage to enemy units in the area."
+                  "Shadow Fiend razes the ground directly in front of him, dealing damage to enemy units in the area."
                   " Adds a stacking damage amplifier on the target that causes the enemy to take bonus Shadow Raze damage per stack.",
               imageUrl:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level1.png',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level1.png',
               manaCost: '90',
               coolDown: '10',
             ),
             HeroLevel(
               name: 'Necromastery',
-              description:"Shadow Fiend steals the soul from units he kills, gaining bonus damage. If the killed unit is a hero, he gains an additional 1 bonus souls. On death, he releases half of them from bondage.",
+              description:
+                  "Shadow Fiend steals the soul from units he kills, gaining bonus damage. If the killed unit is a hero, he gains an additional 1 bonus souls. On death, he releases half of them from bondage.",
               imageUrl:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level2.png',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level2.png',
               manaCost: '0',
               coolDown: '0',
             ),
             HeroLevel(
               name: 'Presence of the Dark Lord',
-              description:
-              "Shadow Fiend's presence reduces the armor of nearby enemies.",
+              description: "Shadow Fiend's presence reduces the armor of nearby enemies.",
               imageUrl:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level3.png',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level3.png',
               manaCost: '0',
               coolDown: '0',
             ),
             HeroLevel(
               name: 'Requiem of Souls',
-              description:"Shadow Fiend gathers his captured souls to release them as lines of demonic energy. Units near Shadow Fiend when the souls are released can be damaged by several lines of energy."
+              description:
+                  "Shadow Fiend gathers his captured souls to release them as lines of demonic energy. Units near Shadow Fiend when the souls are released can be damaged by several lines of energy."
                   " Any unit damaged by Requiem of Souls will be feared and have its movement speed reduced for 0.8 seconds for each line hit. Lines of energy are created for every 1 souls captured through Necromastery.",
               imageUrl:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level4.png',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sf/level4.png',
               manaCost: '150/175/200',
               coolDown: '120/110/100',
             ),
@@ -951,11 +954,11 @@ class DotaHero {
           color: Colors.blue,
           bio:
               "Lord of Heaven, father of gods, Zeus treats all the Heroes as if they are his rambunctious, rebellious children."
-                  " After being caught unnumbered times in the midst of trysts with countless mortal women,"
-                  " his divine wife finally gave him an ultimatum: 'If you love mortals so much, go and become one."
-                  " If you can prove yourself faithful, then return to me as my immortal husband. Otherwise, go and die among your creatures.' Zeus found her logic (and her magic) irrefutable,"
-                  " and agreed to her plan. He has been on his best behavior ever since, being somewhat fonder of immortality than he is of mortals."
-                  " But to prove himself worthy of his eternal spouse, he must continue to pursue victory on the field of battle.",
+              " After being caught unnumbered times in the midst of trysts with countless mortal women,"
+              " his divine wife finally gave him an ultimatum: 'If you love mortals so much, go and become one."
+              " If you can prove yourself faithful, then return to me as my immortal husband. Otherwise, go and die among your creatures.' Zeus found her logic (and her magic) irrefutable,"
+              " and agreed to her plan. He has been on his best behavior ever since, being somewhat fonder of immortality than he is of mortals."
+              " But to prove himself worthy of his eternal spouse, he must continue to pursue victory on the field of battle.",
           attackType: AttackType.range,
           primaryAttr: PrimaryAttr.intelligence,
           roles: [
@@ -964,36 +967,38 @@ class DotaHero {
           levels: [
             HeroLevel(
               name: 'Arc Lightning',
-              description:"Hurls a bolt of lightning that leaps through nearby enemy units.",
+              description: "Hurls a bolt of lightning that leaps through nearby enemy units.",
               imageUrl:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level1.png',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level1.png',
               manaCost: '80',
               coolDown: '1.60',
             ),
             HeroLevel(
               name: 'Lightning Bolt',
-              description:"Calls down a bolt of lightning to strike an enemy unit, causing damage and a mini-stun. When cast,"
+              description:
+                  "Calls down a bolt of lightning to strike an enemy unit, causing damage and a mini-stun. When cast,"
                   " Lightning Bolt briefly provides unobstructed vision and True Sight around the target in a 750 radius. Can be cast on the ground, affecting the closest enemy hero in 325 range.",
               imageUrl:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level2.png',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level2.png',
               manaCost: '125/130/135/140',
               coolDown: '6',
             ),
             HeroLevel(
               name: 'Static Field',
               description:
-              "Zeus shocks any enemy hit by his abilities, causing damage proportional to their current health.",
+                  "Zeus shocks any enemy hit by his abilities, causing damage proportional to their current health.",
               imageUrl:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level3.png',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level3.png',
               manaCost: '0',
               coolDown: '0',
             ),
             HeroLevel(
               name: "Thundergod's Wrath",
-              description:"Strikes all enemy heroes with a bolt of lightning, no matter where they may be."
+              description:
+                  "Strikes all enemy heroes with a bolt of lightning, no matter where they may be."
                   " Thundergod's Wrath also provides True Sight around each hero struck. If an enemy hero is invisible, it takes no damage, but the True Sight is still created at that hero's location.",
               imageUrl:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level4.png',
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/zeus/level4.png',
               manaCost: '250/350/450',
               coolDown: '120',
             ),
@@ -1005,6 +1010,62 @@ class DotaHero {
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/earth_shaker.png',
           views: '33k',
           color: Colors.orange,
+          bio:
+              "Like a golem or gargoyle, Earthshaker was one with the earth but now walks freely upon it."
+              " Unlike those other entities, he created himself through an act of will, and serves no other master."
+              " In restless slumbers, encased in a deep seam of stone, he became aware of the life drifting freely above him. He grew curious."
+              " During a season of tremors, the peaks of Nishai shook themselves loose of avalanches,"
+              " shifting the course of rivers and turning shallow valleys into bottomless chasms. When the land finally ceased quaking,"
+              " Earthshaker stepped from the settling dust, tossing aside massive boulders as if throwing off a light blanket. He had shaped himself in the image of a mortal beast,"
+              " and named himself Raigor Stonehoof. He bleeds now, and breathes, and therefore he can die."
+              " But his spirit is still that of the earth; he carries its power in the magical totem that never leaves him."
+              " And on the day he returns to dust, the earth will greet him as a prodigal son.",
+          attackType: AttackType.melee,
+          primaryAttr: PrimaryAttr.strength,
+          roles: [
+            'Support',
+            'Initiator',
+            'Disabler',
+            'Nuker',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Fissure',
+              description:
+                  "Slams the ground with a mighty totem, creating an impassable ridge of stone while stunning and damaging enemy units along its line.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level1.png',
+              manaCost: '110/130/150/170',
+              coolDown: '21/19/17/15',
+            ),
+            HeroLevel(
+              name: 'Enchant Totem',
+              description:
+                  "Empowers Earthshaker's totem, causing it to deal extra damage and have 75 bonus attack range on the next attack.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level2.png',
+              manaCost: '35/40/45/50',
+              coolDown: '5',
+            ),
+            HeroLevel(
+              name: 'Aftershock',
+              description:
+                  "Causes the earth to shake underfoot, adding additional damage and stuns to nearby enemy units when Earthshaker casts his abilities.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level3.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: "Echo Slam",
+              description:
+                  "Shockwaves travel through the ground, damaging enemy units. Each enemy hit causes an echo to damage nearby units. Real heroes cause two echoes.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/earth_shaker/level4.png',
+              manaCost: '145/205/265',
+              coolDown: '150/130/110',
+            ),
+          ],
         ),
         DotaHero(
           name: 'Disruptor',
@@ -1012,6 +1073,66 @@ class DotaHero {
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/disruptor.png',
           views: '33k',
           color: Colors.teal,
+          bio:
+              "High on the wind-ravaged steppes of Druud, a gifted young stormcrafter called Disruptor was the first to unlock the secrets of the summer squalls."
+              " Constantly under assault from both seasonal storms and encroachment from civilized kingdoms to the South, the upland Oglodi have for centuries struggled to subsist atop the endless tablelands."
+              " They are the fractured remnant of a once-great civilization, a fallen tribe, their stormcraft strange and inscrutable,"
+              " cobbled together from scraps of lost knowledge which even they no longer fully understand. For those on the high plain,"
+              " weather has become a kind of religion, worshiped as both the giver and taker of life."
+              " But the electrical storms that bring life-sustaining rains arrive at a cost, and many are the charred and smoking corpses left in their wake."
+              "Although small for his kind, Disruptor is fearless, and driven by an insatiable curiosity."
+              " As a youth, while still unblooded and without a stryder, he explored the ruins of the ancestral cities,"
+              " searching through collapsed and long-moldering libraries, rummaging through rusting manufactories."
+              " He took what he needed and returned to his tribe. Adapting a coil of ancient design,"
+              " he harnessed the power of electrical differential and now calls down the thunder whenever he wishes."
+              " Part magic, part craftsmanship, his coils hold in their glowing plates the power of life and death--a power wielded with precision against the landed castes to the South, and any interlopers who cross into ancient Oglodi lands.",
+          attackType: AttackType.range,
+          primaryAttr: PrimaryAttr.intelligence,
+          roles: [
+            'Support',
+            'Disabler',
+            'Nuker',
+            'Initiator',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Thunder Strike',
+              description:
+                  "Repeatedly strikes the targeted unit with lightning. Each strike damages nearby enemy units in a small radius and slows enemy movement and attack speed by 100% for 0.1 seconds. Provides vision of its target.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/level1.png',
+              manaCost: '130/140/150/160',
+              coolDown: '18/15/12/9',
+            ),
+            HeroLevel(
+              name: 'Glimpse',
+              description:
+                  "Teleports the target hero back to where it was 4 seconds ago. Instantly kills illusions.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/level2.png',
+              manaCost: '100',
+              coolDown: '60/46/32/18',
+            ),
+            HeroLevel(
+              name: 'Kinetic Field',
+              description:
+                  "After a short formation time, creates a circular barrier of kinetic energy that enemies can't pass.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/level3.png',
+              manaCost: '70/70/70/70',
+              coolDown: '19/16/13/10',
+            ),
+            HeroLevel(
+              name: "Static Storm",
+              description:
+                  "Creates a damaging static storm that also silences all enemy units in the area for the duration."
+                  " The damage starts off weak, but increases in power over the duration.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/level4.png',
+              manaCost: '125/175/225',
+              coolDown: '90/80/70',
+            ),
+          ],
         ),
         DotaHero(
           name: 'Invoker',
@@ -1019,6 +1140,65 @@ class DotaHero {
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/invoker.png',
           views: '33k',
           color: Colors.lime,
+          bio:
+              "In its earliest, and some would say most potent form, magic was primarily the art of memory."
+              " It required no technology, no wands or appurtenances other than the mind of the magician."
+              " All the trappings of ritual were merely mnemonic devices, meant to allow the practitioner to recall in rich detail the specific mental formulae that unlocked a spell's power."
+              " The greatest mages in those days were the ones blessed with the greatest memories,"
+              " and yet so complex were the invocations that all wizards were forced to specialize."
+              " The most devoted might hope in a lifetime to have adequate recollection of three spells--four at most. Ordinary wizards were content to know two,"
+              " and it was not uncommon for a village mage to know only one--with even that requiring him to consult grimoires as an aid against forgetfulness on the rare occasions when he might be called to use it."
+              " But among these early practitioners there was one exception, a genius of vast intellect and prodigious memory who came to be known as the Invoker."
+              " In his youth, the precocious wizard mastered not four, not five, not even seven incantations:"
+              " He could command no fewer than ten spells, and cast them instantly."
+              " Many more he learned but found useless, and would practice once then purge from his mind forever, to make room for more practical invocations."
+              " One such spell was the Sempiternal Cantrap--a longevity spell of such power that those who cast it in the world's first days are among us still (unless they have been crushed to atoms)."
+              " Most of these quasi-immortals live quietly, afraid to admit their secret: But Invoker is not one to keep his gifts hidden."
+              " He is ancient, learned beyond all others, and his mind somehow still has space to contain an immense sense of his own worth...as well as the Invocations with which he amuses himself through the long slow twilight of the world's dying days.",
+          attackType: AttackType.range,
+          primaryAttr: PrimaryAttr.intelligence,
+          roles: [
+            'Carry',
+            'Nuker',
+            'Disabler',
+            'Escape',
+            'Pusher',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Quas',
+              description:
+                  "Allows manipulation of ice elements. Each Quas instance provides increased health regeneration. /n"
+                  "DAMAGE: 0 / 0 / 0 / 0 , HP REGEN PER INSTANCE: 1 / 3 / 5 / 7 / 9 / 11 / 13",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/level1.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Wex',
+              description:
+                  "Allows manipulation of storm elements. Each Wex instance provides increased attack speed and movement speed. \n"
+                  "DAMAGE: 0 / 0 / 0 / 0,"
+                  "ATTACK SPEED PER INSTANCE: 2 / 4 / 6 / 8 / 10 / 12 / 14,"
+                  "MOVE SPEED PER INSTANCE: 1% / 2% / 3% / 4% / 5% / 6% / 7%",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/level2.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Exort',
+              description:
+                  "Allows manipulation of fire elements. Each Exort instance provides increased attack damage."
+                  "DAMAGE: 0 / 0 / 0 / 0,"
+                  "DAMAGE PER INSTANCE: 2 / 6 / 10 / 14 / 18 / 22 / 26",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/level3.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+          ],
         ),
         DotaHero(
           name: 'Sven',
@@ -1026,6 +1206,63 @@ class DotaHero {
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/sven.png',
           views: '54k',
           color: Colors.blueGrey,
+          bio:
+              "Sven is the bastard son of a Vigil Knight, born of a Pallid Meranth, raised in the Shadeshore Ruins."
+              " With his father executed for violating the Vigil Codex, and his mother shunned by her wild race,"
+              " Sven believes that honor is to be found in no social order, but only in himself."
+              " After tending his mother through a lingering death, he offered himself as a novice to the Vigil Knights,"
+              " never revealing his identity. For thirteen years he studied in his father's school,"
+              " mastering the rigid code that declared his existence an abomination. Then, on the day that should have been his In-Swearing,"
+              " he seized the Outcast Blade, shattered the Sacred Helm, and burned the Codex in the Vigil's Holy Flame. He strode from Vigil Keep,"
+              " forever solitary, following his private code to the last strict rune. Still a knight, yes...but a Rogue Knight. He answers only to himself.",
+          attackType: AttackType.melee,
+          primaryAttr: PrimaryAttr.strength,
+          roles: [
+            'Carry',
+            'Disabler',
+            'Initiator',
+            'Durable',
+            'Nuker',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Storm Hammer',
+              description:
+                  "Sven unleashes his magical gauntlet that deals damage and stuns enemy units in a small area around the target.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level1.png',
+              manaCost: '110/120/130/140',
+              coolDown: '18/16/14/12',
+            ),
+            HeroLevel(
+              name: 'Great Cleave',
+              description:
+                  "Sven strikes with great force, cleaving all nearby enemy units with his attack.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level2.png',
+              manaCost: '0/0/0/0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Warcry',
+              description:
+                  "Sven's Warcry heartens his allied heroes for battle, increasing their armor and damage."
+                  " Additionally increases Sven's own movement speed. Lasts 8 seconds.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level3.png',
+              manaCost: '30/40/50/60',
+              coolDown: '32/28/24/20',
+            ),
+            HeroLevel(
+              name: "God's Strength",
+              description:
+                  "Sven channels his rogue strength, granting bonus strength and damage for %abilityduration% seconds.",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/sven/level4.png',
+              manaCost: '100/150/200',
+              coolDown: '110',
+            ),
+          ],
         ),
       ];
 }
@@ -1035,8 +1272,8 @@ class HeroLevel {
     @required this.name,
     @required this.description,
     @required this.imageUrl,
-    this.manaCost,
-    this.coolDown,
+    @required this.manaCost,
+    @required this.coolDown,
   });
 
   final String name;
