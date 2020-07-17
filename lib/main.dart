@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 //main runner
 void main() {
   runApp(IntroductionApp());
@@ -124,13 +125,7 @@ class _FavoritePageState extends State<FavoritePage> with TickerProviderStateMix
                         hero: DotaHero.favoriteHeroes[index],
                         onTap: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => DetailPage(
-                                hero: DotaHero.favoriteHeroes[index],
-                              ),
-                            ),
-                          );
+                              context, _createDetailRoute(DotaHero.favoriteHeroes[index]));
                         },
                         transition: animation,
                         transitionController: animationController,
@@ -150,6 +145,26 @@ class _FavoritePageState extends State<FavoritePage> with TickerProviderStateMix
   void dispose() {
     animationController.dispose();
     super.dispose();
+  }
+
+  Route _createDetailRoute(DotaHero hero) {
+    return PageRouteBuilder(
+      transitionDuration: Duration(seconds: 1),
+      pageBuilder: (context, animation, secondaryAnimation) => DetailPage(hero: hero),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        final begin = Offset(0.0, 1.0);
+        final end = Offset.zero;
+
+        final curve = Curves.fastOutSlowIn;
+
+        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
   }
 }
 
@@ -281,10 +296,13 @@ class _HeroWidgetState extends State<HeroWidget> with SingleTickerProviderStateM
                 builder: (context, constraints) {
                   print(constraints);
                   return AnimatedBuilder(
-                    child: FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      fit: BoxFit.contain,
-                      image: widget.hero.imagePath,
+                    child: Hero(
+                      tag: widget.hero.name,
+                      child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        fit: BoxFit.contain,
+                        image: widget.hero.imagePath,
+                      ),
                     ),
                     animation: _imageAnimation,
                     builder: (BuildContext context, Widget child) {
@@ -449,53 +467,34 @@ class DetailPage extends StatelessWidget {
 //                          ),
 //                        ),
 //                      ),
-                      FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        fit: BoxFit.contain,
-                        image: hero.imagePath,
+                      Hero(
+                        tag: hero.name,
+                        child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          fit: BoxFit.contain,
+                          image: hero.imagePath,
+                        ),
                       ),
                       Align(
                         alignment: Alignment.bottomLeft,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Expanded(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: Row(
                                 children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                                    child: Text(
-                                      hero.name,
-                                      style: Theme.of(context).textTheme.headline5.copyWith(
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                    ),
+                                  Text(
+                                    hero.name,
+                                    style: Theme.of(context).textTheme.headline5.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                   ),
-                                  SizedBox(height: 8),
-                                  Container(
-                                    padding: EdgeInsets.all(8),
-                                    margin: EdgeInsets.symmetric(horizontal: 16),
-                                    decoration: BoxDecoration(
-                                      color: hero.color[400],
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Text(
-                                      hero.roles.join(', '),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 24.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
+                                  SizedBox(width: 8),
                                   SizedBox(
-                                    width: 50,
-                                    height: 50,
+                                    width: 30,
+                                    height: 30,
                                     child: ClipOval(
                                       child: FadeInImage.memoryNetwork(
                                         placeholder: kTransparentImage,
@@ -507,9 +506,19 @@ class DetailPage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 4),
-                                  Text(hero.primaryAttr.toString().split('.').last),
                                 ],
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              margin: EdgeInsets.symmetric(horizontal: 16),
+                              decoration: BoxDecoration(
+                                color: hero.color[400],
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                hero.roles.join(', '),
                               ),
                             ),
                           ],
@@ -1119,7 +1128,7 @@ class DotaHero {
           imagePath:
               'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/slark.png',
           views: '39k',
-          color: Colors.brown,
+          color: Colors.deepPurple,
           bio:
               "Little known to the inhabitants of the dry world, Dark Reef is a sunken prison where the worst of the sea-bred are sent for crimes against their fellows."
               " It is a razor barbed warren full of murderous slithereen, treacherous Deep Ones, sociopathic meranths. In this dim labyrinth, patrolled by eels and guarded by enormous anemones, only the vicious survive."
@@ -1171,6 +1180,72 @@ class DotaHero {
                   'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/slark/level4.png',
               manaCost: '120/120/120',
               coolDown: '80/70/60',
+            ),
+          ],
+        ),
+        DotaHero(
+          name: 'Invoker',
+          imagePath:
+              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/invoker.png',
+          views: '33k',
+          color: Colors.lime,
+          bio:
+              "In its earliest, and some would say most potent form, magic was primarily the art of memory."
+              " It required no technology, no wands or appurtenances other than the mind of the magician."
+              " All the trappings of ritual were merely mnemonic devices, meant to allow the practitioner to recall in rich detail the specific mental formulae that unlocked a spell's power."
+              " The greatest mages in those days were the ones blessed with the greatest memories,"
+              " and yet so complex were the invocations that all wizards were forced to specialize."
+              " The most devoted might hope in a lifetime to have adequate recollection of three spells--four at most. Ordinary wizards were content to know two,"
+              " and it was not uncommon for a village mage to know only one--with even that requiring him to consult grimoires as an aid against forgetfulness on the rare occasions when he might be called to use it."
+              " But among these early practitioners there was one exception, a genius of vast intellect and prodigious memory who came to be known as the Invoker."
+              " In his youth, the precocious wizard mastered not four, not five, not even seven incantations:"
+              " He could command no fewer than ten spells, and cast them instantly."
+              " Many more he learned but found useless, and would practice once then purge from his mind forever, to make room for more practical invocations."
+              " One such spell was the Sempiternal Cantrap--a longevity spell of such power that those who cast it in the world's first days are among us still (unless they have been crushed to atoms)."
+              " Most of these quasi-immortals live quietly, afraid to admit their secret: But Invoker is not one to keep his gifts hidden."
+              " He is ancient, learned beyond all others, and his mind somehow still has space to contain an immense sense of his own worth...as well as the Invocations with which he amuses himself through the long slow twilight of the world's dying days.",
+          attackType: AttackType.range,
+          primaryAttr: PrimaryAttr.intelligence,
+          roles: [
+            'Carry',
+            'Nuker',
+            'Disabler',
+            'Escape',
+            'Pusher',
+          ],
+          levels: [
+            HeroLevel(
+              name: 'Quas',
+              description:
+                  "Allows manipulation of ice elements. Each Quas instance provides increased health regeneration. /n"
+                  "DAMAGE: 0 / 0 / 0 / 0 , HP REGEN PER INSTANCE: 1 / 3 / 5 / 7 / 9 / 11 / 13",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/level1.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Wex',
+              description:
+                  "Allows manipulation of storm elements. Each Wex instance provides increased attack speed and movement speed. \n"
+                  "DAMAGE: 0 / 0 / 0 / 0,"
+                  "ATTACK SPEED PER INSTANCE: 2 / 4 / 6 / 8 / 10 / 12 / 14,"
+                  "MOVE SPEED PER INSTANCE: 1% / 2% / 3% / 4% / 5% / 6% / 7%",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/level2.png',
+              manaCost: '0',
+              coolDown: '0',
+            ),
+            HeroLevel(
+              name: 'Exort',
+              description:
+                  "Allows manipulation of fire elements. Each Exort instance provides increased attack damage."
+                  "DAMAGE: 0 / 0 / 0 / 0,"
+                  "DAMAGE PER INSTANCE: 2 / 6 / 10 / 14 / 18 / 22 / 26",
+              imageUrl:
+                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/level3.png',
+              manaCost: '0',
+              coolDown: '0',
             ),
           ],
         ),
@@ -1238,72 +1313,6 @@ class DotaHero {
                   'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/disruptor/level4.png',
               manaCost: '125/175/225',
               coolDown: '90/80/70',
-            ),
-          ],
-        ),
-        DotaHero(
-          name: 'Invoker',
-          imagePath:
-              'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/invoker.png',
-          views: '33k',
-          color: Colors.lime,
-          bio:
-              "In its earliest, and some would say most potent form, magic was primarily the art of memory."
-              " It required no technology, no wands or appurtenances other than the mind of the magician."
-              " All the trappings of ritual were merely mnemonic devices, meant to allow the practitioner to recall in rich detail the specific mental formulae that unlocked a spell's power."
-              " The greatest mages in those days were the ones blessed with the greatest memories,"
-              " and yet so complex were the invocations that all wizards were forced to specialize."
-              " The most devoted might hope in a lifetime to have adequate recollection of three spells--four at most. Ordinary wizards were content to know two,"
-              " and it was not uncommon for a village mage to know only one--with even that requiring him to consult grimoires as an aid against forgetfulness on the rare occasions when he might be called to use it."
-              " But among these early practitioners there was one exception, a genius of vast intellect and prodigious memory who came to be known as the Invoker."
-              " In his youth, the precocious wizard mastered not four, not five, not even seven incantations:"
-              " He could command no fewer than ten spells, and cast them instantly."
-              " Many more he learned but found useless, and would practice once then purge from his mind forever, to make room for more practical invocations."
-              " One such spell was the Sempiternal Cantrap--a longevity spell of such power that those who cast it in the world's first days are among us still (unless they have been crushed to atoms)."
-              " Most of these quasi-immortals live quietly, afraid to admit their secret: But Invoker is not one to keep his gifts hidden."
-              " He is ancient, learned beyond all others, and his mind somehow still has space to contain an immense sense of his own worth...as well as the Invocations with which he amuses himself through the long slow twilight of the world's dying days.",
-          attackType: AttackType.range,
-          primaryAttr: PrimaryAttr.intelligence,
-          roles: [
-            'Carry',
-            'Nuker',
-            'Disabler',
-            'Escape',
-            'Pusher',
-          ],
-          levels: [
-            HeroLevel(
-              name: 'Quas',
-              description:
-                  "Allows manipulation of ice elements. Each Quas instance provides increased health regeneration. /n"
-                  "DAMAGE: 0 / 0 / 0 / 0 , HP REGEN PER INSTANCE: 1 / 3 / 5 / 7 / 9 / 11 / 13",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/level1.png',
-              manaCost: '0',
-              coolDown: '0',
-            ),
-            HeroLevel(
-              name: 'Wex',
-              description:
-                  "Allows manipulation of storm elements. Each Wex instance provides increased attack speed and movement speed. \n"
-                  "DAMAGE: 0 / 0 / 0 / 0,"
-                  "ATTACK SPEED PER INSTANCE: 2 / 4 / 6 / 8 / 10 / 12 / 14,"
-                  "MOVE SPEED PER INSTANCE: 1% / 2% / 3% / 4% / 5% / 6% / 7%",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/level2.png',
-              manaCost: '0',
-              coolDown: '0',
-            ),
-            HeroLevel(
-              name: 'Exort',
-              description:
-                  "Allows manipulation of fire elements. Each Exort instance provides increased attack damage."
-                  "DAMAGE: 0 / 0 / 0 / 0,"
-                  "DAMAGE PER INSTANCE: 2 / 6 / 10 / 14 / 18 / 22 / 26",
-              imageUrl:
-                  'https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/heroes/invoker/level3.png',
-              manaCost: '0',
-              coolDown: '0',
             ),
           ],
         ),
