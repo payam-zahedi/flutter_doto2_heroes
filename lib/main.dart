@@ -623,28 +623,33 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
                               ),
                             );
                           },
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              SizedBox(
-                                height: MediaQuery.of(context).size.shortestSide / 7,
-                                width: MediaQuery.of(context).size.shortestSide / 7,
-                                child: ClipOval(
-                                  child: FadeInImage.memoryNetwork(
-                                    placeholder: kTransparentImage,
-                                    fit: BoxFit.cover,
-                                    image: level.imageUrl,
+                          child: GestureDetector(
+                            onTap: () {
+                              _showSheet(context, level);
+                            },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.shortestSide / 7,
+                                  width: MediaQuery.of(context).size.shortestSide / 7,
+                                  child: ClipOval(
+                                    child: FadeInImage.memoryNetwork(
+                                      placeholder: kTransparentImage,
+                                      fit: BoxFit.cover,
+                                      image: level.imageUrl,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                level.name,
-                                style: Theme.of(context).textTheme.bodyText2,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ],
+                                SizedBox(height: 8),
+                                Text(
+                                  level.name,
+                                  style: Theme.of(context).textTheme.bodyText2,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -717,6 +722,119 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
     _animationController.dispose();
     _slideAnimations = null;
     super.dispose();
+  }
+
+  Future<void> _showSheet(BuildContext context, HeroLevel level) async {
+    final maxBorderRadius = MediaQuery.of(context).size.width * 1 / 10;
+    var borderRadius = maxBorderRadius;
+    log('modalShowed');
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) {
+        return NotificationListener<DraggableScrollableNotification>(
+          onNotification: (notification) {
+            log('max scroll : ${notification.maxExtent}');
+            log('min scroll : ${notification.minExtent}');
+            log('extent : ${notification.extent}');
+            if (notification.maxExtent <= (notification.extent + 0.05)) {
+              borderRadius = 0;
+            } else {
+              borderRadius = maxBorderRadius;
+            }
+            log('$notification');
+            return false;
+          },
+          child: DraggableScrollableSheet(
+            expand: true,
+            builder: (_, controller) {
+              return AnimatedContainer(
+                duration: Duration(milliseconds: 500),
+                curve: Curves.fastOutSlowIn,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(borderRadius),
+                    topRight: Radius.circular(borderRadius),
+                  ),
+                ),
+                padding: EdgeInsets.all(16),
+                child: ListView(
+                  controller: controller,
+                  shrinkWrap: false,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: ClipOval(
+                            child: FadeInImage.memoryNetwork(
+                              placeholder: kTransparentImage,
+                              fit: BoxFit.cover,
+                              image: level.imageUrl,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Expanded(
+                          flex: 4,
+                          child: Text(
+                            level.name,
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    Text(level.description),
+                    SizedBox(height: 8),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          width: 16,
+                          height: 16,
+                          decoration: BoxDecoration(
+                              color: Colors.blue, borderRadius: BorderRadius.circular(4)),
+                        ),
+                        SizedBox(width: 8),
+                        Text('Mana Cost :  '),
+                        Text(
+                          level.manaCost,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.access_time,
+                          size: 16,
+                        ),
+                        SizedBox(width: 8),
+                        Text('Cooldown :  '),
+                        Text(level.coolDown),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+    log('modal closed');
   }
 }
 
