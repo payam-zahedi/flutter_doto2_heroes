@@ -725,7 +725,7 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
   }
 
   Future<void> _showSheet(BuildContext context, HeroLevel level) async {
-    final maxBorderRadius = MediaQuery.of(context).size.width * 1 / 10;
+    final maxBorderRadius = 50.0;
     var borderRadius = maxBorderRadius;
     log('modalShowed');
     await showModalBottomSheet(
@@ -735,14 +735,8 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
       builder: (_) {
         return NotificationListener<DraggableScrollableNotification>(
           onNotification: (notification) {
-            log('max scroll : ${notification.maxExtent}');
-            log('min scroll : ${notification.minExtent}');
-            log('extent : ${notification.extent}');
-            if (notification.maxExtent <= (notification.extent + 0.05)) {
-              borderRadius = 0;
-            } else {
-              borderRadius = maxBorderRadius;
-            }
+            borderRadius =
+                notification.maxExtent <= (notification.extent + 0.08) ? 0 : maxBorderRadius;
             log('$notification');
             return false;
           },
@@ -760,14 +754,18 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
                   ),
                 ),
                 padding: EdgeInsets.all(16),
+                margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
                 child: ListView(
                   controller: controller,
                   shrinkWrap: false,
                   children: <Widget>[
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+
                       children: <Widget>[
-                        Expanded(
-                          flex: 1,
+                        SizedBox(
+                          width: 75,
+                          height: 75,
                           child: ClipOval(
                             child: FadeInImage.memoryNetwork(
                               placeholder: kTransparentImage,
@@ -785,13 +783,17 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
                           ),
                         ),
                         SizedBox(width: 8),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: Icon(Icons.close),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            padding: EdgeInsets.all(4),
+                            alignment: Alignment.topRight,
+                            child: Icon(Icons.close),
                           ),
                         ),
                       ],
