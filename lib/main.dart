@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
@@ -102,9 +103,9 @@ class _FavoritePageState extends State<FavoritePage> with TickerProviderStateMix
                   children: List<Widget>.generate(
                     DotaHero.favoriteHeroes.length,
                     (index) {
-                      final count = DotaHero.favoriteHeroes.length;
+                      final count = DotaHero.favoriteHeroes.length + 3;
                       final beginInterval = (1 / count) * index;
-                      final endInterval = 1.0;
+                      final endInterval = math.min<double>(1, (1 / count) * (index + 5));
                       final Animation<double> animation = Tween<double>(
                         begin: 0,
                         end: 1,
@@ -404,7 +405,7 @@ class RoundedDiagonalPathClipper extends CustomClipper<Path> {
 }
 
 // detail page
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   final DotaHero hero;
 
   const DetailPage({
@@ -414,11 +415,46 @@ class DetailPage extends StatelessWidget {
         super(key: key);
 
   @override
+  _DetailPageState createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
+  List<Animation> _slideAnimations;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(vsync: this, duration: Duration(seconds: 2));
+    _slideAnimations = List<Animation>.generate(7, (index) {
+      final count = 10;
+      final beginInterval = (1 / count) * index;
+      final endInterval = math.min<double>(1, (1 / count) * (index + 5));
+      return Tween<double>(
+        begin: 0,
+        end: 1,
+      ).animate(
+        CurvedAnimation(
+          parent: _animationController,
+          curve: Interval(
+            beginInterval,
+            endInterval,
+            curve: Curves.fastOutSlowIn,
+          ),
+        ),
+      );
+    });
+
+    _animationController.forward();
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          hero.name,
+          widget.hero.name,
           style: Theme.of(context).textTheme.bodyText2,
         ),
         centerTitle: true,
@@ -450,7 +486,7 @@ class DetailPage extends StatelessWidget {
                           fit: BoxFit.contain,
                           image: detailBackgroundUrl.replaceAll(
                             '{{ability}}',
-                            hero.primaryAttr.toString().split('.').last,
+                            widget.hero.primaryAttr.toString().split('.').last,
                           ),
                         ),
                       ),
@@ -467,11 +503,11 @@ class DetailPage extends StatelessWidget {
 //                        ),
 //                      ),
                       Hero(
-                        tag: hero.name,
+                        tag: widget.hero.name,
                         child: FadeInImage.memoryNetwork(
                           placeholder: kTransparentImage,
                           fit: BoxFit.contain,
-                          image: hero.imagePath,
+                          image: widget.hero.imagePath,
                         ),
                       ),
                       Align(
@@ -485,7 +521,7 @@ class DetailPage extends StatelessWidget {
                               child: Row(
                                 children: <Widget>[
                                   Text(
-                                    hero.name,
+                                    widget.hero.name,
                                     style: Theme.of(context).textTheme.headline5.copyWith(
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -500,7 +536,7 @@ class DetailPage extends StatelessWidget {
                                         fit: BoxFit.cover,
                                         image: abilityImage.replaceAll(
                                           '{{ability}}',
-                                          hero.primaryAttr.toString().split('.').last,
+                                          widget.hero.primaryAttr.toString().split('.').last,
                                         ),
                                       ),
                                     ),
@@ -513,11 +549,11 @@ class DetailPage extends StatelessWidget {
                               padding: EdgeInsets.all(8),
                               margin: EdgeInsets.symmetric(horizontal: 16),
                               decoration: BoxDecoration(
-                                color: hero.color[400],
+                                color: widget.hero.color[400],
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
-                                hero.roles.join(', '),
+                                widget.hero.roles.join(', '),
                               ),
                             ),
                           ],
@@ -531,11 +567,27 @@ class DetailPage extends StatelessWidget {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 16),
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  'Hero Skills',
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                        color: hero.color[300],
+                child: AnimatedBuilder(
+                  animation: _animationController,
+                  builder: (context, child) {
+                    return FadeTransition(
+                      opacity: _slideAnimations[0],
+                      child: Transform(
+                        transform: Matrix4.translationValues(
+                          0.0,
+                          50 * (1.0 - _slideAnimations[0].value),
+                          0.0,
+                        ),
+                        child: child,
                       ),
+                    );
+                  },
+                  child: Text(
+                    'Hero Skills',
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          color: widget.hero.color[300],
+                        ),
+                  ),
                 ),
               ),
               Padding(
@@ -543,9 +595,27 @@ class DetailPage extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: hero.levels
-                      .map(
-                        (level) => Expanded(
+                  children: List<Widget>.generate(
+                    widget.hero.levels.length,
+                    (index) {
+                      final level = widget.hero.levels[index];
+                      final animation = _slideAnimations[index + 1];
+                      return Expanded(
+                        child: AnimatedBuilder(
+                          animation: _animationController,
+                          builder: (context, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: Transform(
+                                transform: Matrix4.translationValues(
+                                  0.0,
+                                  50 * (1.0 - animation.value),
+                                  0.0,
+                                ),
+                                child: child,
+                              ),
+                            );
+                          },
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
@@ -570,28 +640,61 @@ class DetailPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                      )
-                      .toList(),
+                      );
+                    },
+                  ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Bio',
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                        color: hero.color[300],
+              AnimatedBuilder(
+                animation: _animationController,
+                builder: (context, child) {
+                  return FadeTransition(
+                    opacity: _slideAnimations[5],
+                    child: Transform(
+                      transform: Matrix4.translationValues(
+                        0.0,
+                        50 * (1.0 - _slideAnimations[5].value),
+                        0.0,
                       ),
+                      child: child,
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Bio',
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          color: widget.hero.color[300],
+                        ),
+                  ),
                 ),
               ),
               SizedBox(height: 8),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  hero.bio,
-                  style: Theme.of(context).textTheme.bodyText2.copyWith(),
-                  textAlign: TextAlign.justify,
+              AnimatedBuilder(
+                animation: _animationController,
+                builder: (context, child) {
+                  return FadeTransition(
+                    opacity: _slideAnimations[6],
+                    child: Transform(
+                      transform: Matrix4.translationValues(
+                        0.0,
+                        50 * (1.0 - _slideAnimations[6].value),
+                        0.0,
+                      ),
+                      child: child,
+                    ),
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    widget.hero.bio,
+                    style: Theme.of(context).textTheme.bodyText2.copyWith(),
+                    textAlign: TextAlign.justify,
+                  ),
                 ),
               ),
               SizedBox(height: 24),
@@ -601,9 +704,16 @@ class DetailPage extends StatelessWidget {
       ),
     );
   }
-}
-// constants
 
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _slideAnimations = null;
+    super.dispose();
+  }
+}
+
+// constants
 const String detailBackgroundUrl =
     "https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/game/{{ability}}_background.png";
 const String abilityImage =
