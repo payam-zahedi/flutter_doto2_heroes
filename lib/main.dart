@@ -424,11 +424,15 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    _animationController = AnimationController(vsync: this, duration: Duration(seconds: 2));
-    _slideAnimations = List<Animation>.generate(7, (index) {
-      final count = 10;
+    _animationController = AnimationController(
+        vsync: this,
+        duration: Duration(
+          seconds: 3,
+        ));
+    _slideAnimations = List<Animation>.generate(8, (index) {
+      final count = 13;
       final beginInterval = (1 / count) * index;
-      final endInterval = math.min<double>(1, (1 / count) * (index + 5));
+      final endInterval = 1.0;
       return Tween<double>(
         begin: 0,
         end: 1,
@@ -512,51 +516,54 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
                       ),
                       Align(
                         alignment: Alignment.bottomLeft,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    widget.hero.name,
-                                    style: Theme.of(context).textTheme.headline5.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                  ),
-                                  SizedBox(width: 8),
-                                  SizedBox(
-                                    width: 30,
-                                    height: 30,
-                                    child: ClipOval(
-                                      child: FadeInImage.memoryNetwork(
-                                        placeholder: kTransparentImage,
-                                        fit: BoxFit.cover,
-                                        image: abilityImage.replaceAll(
-                                          '{{ability}}',
-                                          widget.hero.primaryAttr.toString().split('.').last,
+                        child: FadeTransition(
+                          opacity: _slideAnimations[0],
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      widget.hero.name,
+                                      style: Theme.of(context).textTheme.headline5.copyWith(
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: ClipOval(
+                                        child: FadeInImage.memoryNetwork(
+                                          placeholder: kTransparentImage,
+                                          fit: BoxFit.cover,
+                                          image: abilityImage.replaceAll(
+                                            '{{ability}}',
+                                            widget.hero.primaryAttr.toString().split('.').last,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 8),
-                            Container(
-                              padding: EdgeInsets.all(8),
-                              margin: EdgeInsets.symmetric(horizontal: 16),
-                              decoration: BoxDecoration(
-                                color: widget.hero.color[400],
-                                borderRadius: BorderRadius.circular(6),
+                              SizedBox(height: 8),
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                margin: EdgeInsets.symmetric(horizontal: 16),
+                                decoration: BoxDecoration(
+                                  color: widget.hero.color[400],
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  widget.hero.roles.join(', '),
+                                ),
                               ),
-                              child: Text(
-                                widget.hero.roles.join(', '),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -571,11 +578,11 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
                   animation: _animationController,
                   builder: (context, child) {
                     return FadeTransition(
-                      opacity: _slideAnimations[0],
+                      opacity: _slideAnimations[1],
                       child: Transform(
                         transform: Matrix4.translationValues(
                           0.0,
-                          50 * (1.0 - _slideAnimations[0].value),
+                          50 * (1.0 - _slideAnimations[1].value),
                           0.0,
                         ),
                         child: child,
@@ -599,7 +606,7 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
                     widget.hero.levels.length,
                     (index) {
                       final level = widget.hero.levels[index];
-                      final animation = _slideAnimations[index + 1];
+                      final animation = _slideAnimations[index + 2];
                       return Expanded(
                         child: AnimatedBuilder(
                           animation: _animationController,
@@ -649,11 +656,11 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
                 animation: _animationController,
                 builder: (context, child) {
                   return FadeTransition(
-                    opacity: _slideAnimations[5],
+                    opacity: _slideAnimations[6],
                     child: Transform(
                       transform: Matrix4.translationValues(
                         0.0,
-                        50 * (1.0 - _slideAnimations[5].value),
+                        50 * (1.0 - _slideAnimations[6].value),
                         0.0,
                       ),
                       child: child,
@@ -676,11 +683,11 @@ class _DetailPageState extends State<DetailPage> with SingleTickerProviderStateM
                 animation: _animationController,
                 builder: (context, child) {
                   return FadeTransition(
-                    opacity: _slideAnimations[6],
+                    opacity: _slideAnimations[7],
                     child: Transform(
                       transform: Matrix4.translationValues(
                         0.0,
-                        50 * (1.0 - _slideAnimations[6].value),
+                        50 * (1.0 - _slideAnimations[7].value),
                         0.0,
                       ),
                       child: child,
