@@ -1,5 +1,5 @@
 # FLutter Dota 2 Heroes
-#### Flutter UI template for Dota 2. inspired of  [Umar Aji Pratama](https://dribbble.com/umarajipratama "Umar Aji Pratama") UI [Design](https://dribbble.com/shots/13216314-Dota-2-Streaming-App "Design") + Awsome animations and transitions + [DraggableScrollableSheet](https://api.flutter.dev/flutter/widgets/DraggableScrollableSheet-class.html "DraggableScrollableSheet") + created with built in flutter .
+#### Flutter UI template for Dota 2. inspired of  [Umar Aji Pratama](https://dribbble.com/umarajipratama "Umar Aji Pratama") UI [Design](https://dribbble.com/shots/13216314-Dota-2-Streaming-App "Design") + Click Animation + Awesome animations and transitions + [DraggableScrollableSheet](https://api.flutter.dev/flutter/widgets/DraggableScrollableSheet-class.html "DraggableScrollableSheet") + created with built in flutter .
 
 <p align="center">
     <img src="https://github.com/payam-zahedi/flutter_doto2_heroes/blob/master/assets/image/demo/demo.gif" width="50%">
