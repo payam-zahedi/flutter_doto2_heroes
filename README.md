@@ -6,7 +6,7 @@
 </p>
 
 ## It`s Also available in CodePen
-#### checkout the [CodePen](https://codepen.io/payam-zahedi/pen/jOWpxmr "CodePen") and like it.
+#### checkout the [CodePen](https://codepen.io/payam-zahedi/pen/jOWpxmr "CodePen") and play with it. like it if you love it.
 [![CodePen](https://raw.githubusercontent.com/payam-zahedi/flutter_doto2_heroes/master/assets/image/demo/pen_demo.png "CodePen")](https://codepen.io/payam-zahedi/pen/jOWpxmr "CodePen")
 
 ## Screen Shots
