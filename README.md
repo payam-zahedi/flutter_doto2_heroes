@@ -3,7 +3,7 @@
 
 [![Demo](https://github.com/payam-zahedi/flutter_doto2_heroes/blob/master/assets/image/demo/demo.gif "Demo")](https://github.com/payam-zahedi/flutter_doto2_heroes "Demo")
 
-<img src="https://github.com/payam-zahedi/flutter_doto2_heroes/blob/master/assets/image/demo/demo.gif">
+<img src="https://github.com/payam-zahedi/flutter_doto2_heroes/blob/master/assets/image/demo/demo.gif" width="50%" align="center">
 
 ## It`s Also available in CodePen
 #### checkout the [CodePen](https://codepen.io/payam-zahedi/pen/jOWpxmr "CodePen") and like it.
